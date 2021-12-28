@@ -46,7 +46,7 @@ Check.MouseButton1Click :Connect(function()
 	local token2 = "ALB5O5HBBIE7FWZBMAQBKV3BZKQMS"
 	local json = game:GetService("HttpService"):JSONDecode(game:GetService("HttpService"):GetAsync("https://raw.githubusercontent.com/IAmMrNoob/RFE/main/B?token="..token2, true))
 
-	if json[1][1][Username.Text] == Password.Text then
+	if json[1][1][tostring(Username.Text)] == tostring(Password.Text) then
 		print("Correct")
 	else
 		print("Incorrect")
