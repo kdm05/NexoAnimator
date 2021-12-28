@@ -50,5 +50,8 @@ Check.MouseButton1Click :Connect(function()
 		print("Correct")
 	else
 		print("Incorrect")
+		print(tostring(Username.Text))
+		print(tostring(Password.Text))
+		print(tostring(json[1][1][tostring(Username.Text)]))
 	end
 end)
