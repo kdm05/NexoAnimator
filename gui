@@ -1,0 +1,21 @@
+local ScreenGui = Instance.new("ScreenGui")
+local TESTBUTTON0 = Instance.new("TextButton")
+
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+TESTBUTTON0.Name = "TESTBUTTON0"
+TESTBUTTON0.Parent = ScreenGui
+TESTBUTTON0.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TESTBUTTON0.Position = UDim2.new(0.72077924, 0, 0.494382024, 0)
+TESTBUTTON0.Size = UDim2.new(0, 50, 0, 50)
+TESTBUTTON0.Font = Enum.Font.SourceSans
+TESTBUTTON0.Text = "Yes"
+TESTBUTTON0.TextColor3 = Color3.fromRGB(0, 0, 0)
+TESTBUTTON0.TextSize = 14.000
+
+coroutine.wrap(function()
+	TESTBUTTON0.MouseButton1Click:Connect(function()
+		print("Yes Button")
+	end)
+end)()
