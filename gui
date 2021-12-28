@@ -1,7 +1,7 @@
 local ScreenGui = Instance.new("ScreenGui")
 local TESTBUTTON0 = Instance.new("TextButton")
 
-ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+ScreenGui.Parent = game.Players.SuperNathanGamerPro:WaitForChild("PlayerGui")
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 TESTBUTTON0.Name = "TESTBUTTON0"
