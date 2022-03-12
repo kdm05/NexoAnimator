@@ -1,26 +1,12 @@
-    _G.BypassVelocityChar = _G.BypassVelocityChar
-    _G.BypassVelocityHat = _G.BypassVelocityHat
     HumanDied = false
     for i,v in next, game:GetService("Players").LocalPlayer.Character:GetDescendants() do
         if v:IsA("BasePart") then 
-            if _G.BypassVelocityChar ~= nil then
-                 v.Velocity = _G.BypassVelocityChar
+            game:GetService("RunService").Heartbeat:connect(function()
+            if _G.BypassVelocity ~= nil then
+                 v.Velocity = _G.BypassVelocity
             else
                  v.Velocity = Vector3.new(0,-30,0)
             end
-            game:GetService("RunService").Heartbeat:connect(function()
-                v.Velocity = _G.BypassVelocityChar
-                sethiddenproperty(game.Players.LocalPlayer,"MaximumSimulationRadius",math.huge)
-                sethiddenproperty(game.Players.LocalPlayer,"SimulationRadius",999999999)
-            end)
-        elseif v:IsA("Accessory") then 
-            if _G.BypassVelocityHat ~= nil then
-                 v.Velocity = _G.BypassVelocityHat
-            else
-                 v.Velocity = Vector3.new(0,125,0)
-            end
-            game:GetService("RunService").Heartbeat:connect(function()
-                v.Handle.Velocity = _G.BypassVelocityHat
                 sethiddenproperty(game.Players.LocalPlayer,"MaximumSimulationRadius",math.huge)
                 sethiddenproperty(game.Players.LocalPlayer,"SimulationRadius",999999999)
             end)
