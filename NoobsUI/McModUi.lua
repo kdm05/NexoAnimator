@@ -29,7 +29,7 @@ function e:Ui(name,CanDrag)
 		local s5 = Instance.new("UIGradient",s)
 		local s6 = Instance.new("UICorner",s)
 		
-		EnumFont = EnumFont or Enum.Font.Code
+		EnumFont = EnumFont or Enum.Font.Gotham
 		
 		local padding1 = 34
 		local padding2 = 104
