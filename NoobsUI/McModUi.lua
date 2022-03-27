@@ -19,10 +19,10 @@ function e:Ui(name,CanDrag)
 		return plr
 	end
 
-	function lol.newWindow(TitleText:"Title",color3:"Gradient : Color3 | {Color3,Color3} | {ColorSequenceKeypoints}",rotation:"Gradient : Rotation Number"):"Creates a new window/frame"
+	function lol.newWindow(TitleText,color3,rotation)
 		local b = {}
 		windowsCreated = windowsCreated + 1
-		local s:"Main" = Instance.new("Frame",f)
+		local s = Instance.new("Frame",f)
 		local s2 = Instance.new("TextLabel",s)
 		local s3 = Instance.new("UICorner",s2)
 		local s4 = Instance.new("UIListLayout",s)
@@ -232,7 +232,7 @@ function e:Ui(name,CanDrag)
 				e1.Text = tostring(text)
 			end
 
-			function c:newOnPressed(func:"function")
+			function c:newOnPressed(func)
 				OnPressed = func
 			end
 
@@ -326,7 +326,7 @@ function e:Ui(name,CanDrag)
 				db = false
 			end)
 
-			function bruh:newText(Text:"string")
+			function bruh:newText(Text)
 				titl.Text = tostring(Text)
 			end
 
@@ -425,7 +425,7 @@ function e:Ui(name,CanDrag)
 				e.Text = tostring(nText)
 			end
 
-			function j:setText(nText:"string")
+			function j:setText(nText)
 				h.Text = tostring(nText)
 			end
 
