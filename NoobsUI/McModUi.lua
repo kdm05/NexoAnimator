@@ -1,7 +1,7 @@
 local e = {}
 
 function e:Ui(name,CanDrag)
-	local f = Instance.new("ScreenGui",game:GetService("CoreGui"))
+	local f = Instance.new("ScreenGui",game.CoreGui)
 	f.Name = name
 	local lol = {}
 	local windowsCreated = -1
@@ -31,6 +31,7 @@ function e:Ui(name,CanDrag)
 		
 		EnumFont = EnumFont or Enum.Font.Gotham
 		
+		local textsize = 13
 		local padding1 = 34
 		local padding2 = 104
 		
@@ -94,7 +95,7 @@ function e:Ui(name,CanDrag)
 		s2.TextWrapped = true
 		s2.Text = TitleText
 		s2.TextColor3 = Color3.fromRGB(0, 0, 0)
-		s2.TextSize = 14
+		s2.TextSize = textsize
 
 		s4.HorizontalAlignment = Enum.HorizontalAlignment.Center
 		s4.SortOrder = Enum.SortOrder.LayoutOrder
@@ -197,7 +198,7 @@ function e:Ui(name,CanDrag)
 			e1.Text = KeybindText
 			e1.TextWrapped = true
 			e1.TextColor3 = Color3.fromRGB(0, 0, 0)
-			e1.TextSize = 14
+			e1.TextSize = textsize
 
 			e2.Active = false
 			e2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -214,7 +215,7 @@ function e:Ui(name,CanDrag)
 			e3.Text = string.split(tostring(CurrentKeybind),'.')[3]
 			e3.TextWrapped = true
 			e3.TextColor3 = Color3.fromRGB(0, 0, 0)
-			e3.TextSize = 14
+			e3.TextSize = textsize
 
 			e2.MouseButton1Click:Connect(function()
 				if not changing then
@@ -288,7 +289,7 @@ function e:Ui(name,CanDrag)
 			titl.Text = SwitchText
 			titl.TextWrapped = true
 			titl.TextColor3 = Color3.fromRGB(0, 0, 0)
-			titl.TextSize = 14
+			titl.TextSize = textsize
 
 			sw.Active = false
 			sw.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -312,7 +313,7 @@ function e:Ui(name,CanDrag)
 			hlt.Text = ""
 			hlt.TextWrapped = true
 			hlt.TextColor3 = Color3.fromRGB(0, 0, 0)
-			hlt.TextSize = 14
+			hlt.TextSize = textsize
 			local db = false
 			
 			oCFunct = sw.MouseButton1Click:Connect(function()
@@ -365,7 +366,7 @@ function e:Ui(name,CanDrag)
 			v.TextWrapped = true
 			v.Text = Text
 			v.TextColor3 = Color3.fromRGB(0, 0, 0)
-			v.TextSize = 14
+			v.TextSize = textsize
 			
 			function c:newText(nText)
 				v.Text = tostring(nText)
@@ -411,7 +412,7 @@ function e:Ui(name,CanDrag)
 			e.TextWrapped = true
 			e.Text = Name
 			e.TextColor3 = Color3.fromRGB(0, 0, 0)
-			e.TextSize = 14
+			e.TextSize = textsize
 
 			h.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 			h.BackgroundTransparency = .9
@@ -423,7 +424,7 @@ function e:Ui(name,CanDrag)
 			h.LayoutOrder = 1
 			h.PlaceholderText = Hint
 			h.TextColor3 = Color3.fromRGB(0, 0, 0)
-			h.TextSize = 14
+			h.TextSize = textsize
 			h.TextWrapped = true
 
 			k = h.Changed:Connect(function(Change)
@@ -492,7 +493,7 @@ function e:Ui(name,CanDrag)
 			e.TextWrapped = true
 			e.Text = "<"
 			e.TextColor3 = Color3.fromRGB(0, 0, 0)
-			e.TextSize = 14
+			e.TextSize = textsize
 			e.TextStrokeColor3 = Color3.fromRGB(255, 255, 255)
 			e.TextTransparency = .14
 
@@ -523,7 +524,7 @@ function e:Ui(name,CanDrag)
 			g.Text = ">"
 			g.LayoutOrder = 2
 			g.TextColor3 = Color3.fromRGB(0, 0, 0)
-			g.TextSize = 14
+			g.TextSize = textsize
 			
 			for i,v in ipairs(List) do
 				if v ~= nil then
@@ -533,6 +534,7 @@ function e:Ui(name,CanDrag)
 					selection.Transparency = 1
 					selection.TextWrapped = true
 					selection.Size = UDim2.fromScale(1,1)
+					selection.TextSize = textsize
 					selection.TextTransparency = 0
 					table.insert(ListsOBJ,selection)
 				end
@@ -578,6 +580,7 @@ function e:Ui(name,CanDrag)
 					selection.Transparency = 1
 					selection.TextWrapped = true
 					selection.Size = UDim2.fromScale(1,1)
+					selection.TextSize = textsize
 					selection.TextTransparency = 0
 					table.insert(ListsOBJ,selection)
 				end
@@ -635,7 +638,7 @@ function e:Ui(name,CanDrag)
 			e.Font = EnumFont
 			e.Text = Name
 			e.TextColor3 = Color3.fromRGB(0, 0, 0)
-			e.TextSize = 14
+			e.TextSize = textsize
 			e.TextWrapped = true
 
 			f.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
@@ -648,7 +651,7 @@ function e:Ui(name,CanDrag)
 			f.PlaceholderText = Hint
 			f.LayoutOrder = 1
 			f.TextColor3 = Color3.fromRGB(0, 0, 0)
-			f.TextSize = 14
+			f.TextSize = textsize
 			f.TextWrapped = true
 			f.TextXAlignment = Enum.TextXAlignment.Left
 			f.TextYAlignment = Enum.TextYAlignment.Top
