@@ -1,7 +1,7 @@
 local e = {}
 
 function e:Ui(name,CanDrag)
-	local f = Instance.new("ScreenGui",game.CoreGui)
+	local f = Instance.new("ScreenGui",game:GetService("CoreGui"))
 	f.Name = name
 	local lol = {}
 	local windowsCreated = -1
@@ -19,7 +19,7 @@ function e:Ui(name,CanDrag)
 		return plr
 	end
 
-	function lol.newWindow(TitleText,color3,rotation)
+	function lol.newWindow(TitleText,color3,rotation,EnumFont)
 		local b = {}
 		windowsCreated = windowsCreated + 1
 		local s = Instance.new("Frame",f)
@@ -28,6 +28,8 @@ function e:Ui(name,CanDrag)
 		local s4 = Instance.new("UIListLayout",s)
 		local s5 = Instance.new("UIGradient",s)
 		local s6 = Instance.new("UICorner",s)
+		
+		EnumFont = EnumFont or Enum.Font.Code
 		
 		local padding1 = 34
 		local padding2 = 104
@@ -88,10 +90,11 @@ function e:Ui(name,CanDrag)
 		s2.BackgroundTransparency = 0.950
 		s2.BorderColor3 = Color3.fromRGB(27, 42, 53)
 		s2.Size = UDim2.new(1, 0, 0, 25)
-		s2.Font = Enum.Font.SourceSans
+		s2.Font = EnumFont
+		s2.TextWrapped = true
 		s2.Text = TitleText
 		s2.TextColor3 = Color3.fromRGB(0, 0, 0)
-		s2.TextSize = 14.000
+		s2.TextSize = 14
 
 		s4.HorizontalAlignment = Enum.HorizontalAlignment.Center
 		s4.SortOrder = Enum.SortOrder.LayoutOrder
@@ -123,7 +126,7 @@ function e:Ui(name,CanDrag)
 			e.BackgroundTransparency = 0.800
 			e.BorderColor3 = Color3.fromRGB(27, 42, 53)
 			e.Size = UDim2.new(0.800000012, 0, 0, 30)
-			e.Font = Enum.Font.SourceSans
+			e.Font = EnumFont
 			e.Text = ButtonText
 			e.TextColor3 = Color3.fromRGB(0, 0, 0)
 			e.TextSize = 15.000
@@ -190,8 +193,9 @@ function e:Ui(name,CanDrag)
 			e1.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 			e1.BackgroundTransparency = 1
 			e1.Size = UDim2.new(.55, 0, 1, 0)
-			e1.Font = Enum.Font.SourceSans
+			e1.Font = EnumFont
 			e1.Text = KeybindText
+			e1.TextWrapped = true
 			e1.TextColor3 = Color3.fromRGB(0, 0, 0)
 			e1.TextSize = 14
 
@@ -206,8 +210,9 @@ function e:Ui(name,CanDrag)
 			e3.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 			e3.BackgroundTransparency = .9
 			e3.Size = UDim2.new(1, 0, 1, 0)
-			e3.Font = Enum.Font.SourceSans
+			e3.Font = EnumFont
 			e3.Text = string.split(tostring(CurrentKeybind),'.')[3]
+			e3.TextWrapped = true
 			e3.TextColor3 = Color3.fromRGB(0, 0, 0)
 			e3.TextSize = 14
 
@@ -279,8 +284,9 @@ function e:Ui(name,CanDrag)
 			titl.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 			titl.BackgroundTransparency = 1
 			titl.Size = UDim2.new(.55, 0, 1, 0)
-			titl.Font = Enum.Font.SourceSans
+			titl.Font = EnumFont
 			titl.Text = SwitchText
+			titl.TextWrapped = true
 			titl.TextColor3 = Color3.fromRGB(0, 0, 0)
 			titl.TextSize = 14
 
@@ -302,8 +308,9 @@ function e:Ui(name,CanDrag)
 			hlt.BackgroundTransparency = .4
 			hlt.Position = UDim2.new(.07, 0, 0, 3)
 			hlt.Size = UDim2.new(.48, 0, .8, 0)
-			hlt.Font = Enum.Font.SourceSans
+			hlt.Font = EnumFont
 			hlt.Text = ""
+			hlt.TextWrapped = true
 			hlt.TextColor3 = Color3.fromRGB(0, 0, 0)
 			hlt.TextSize = 14
 			local db = false
@@ -354,7 +361,8 @@ function e:Ui(name,CanDrag)
 			v.BackgroundColor3 = Color3.fromRGB(27, 27, 27)
 			v.BackgroundTransparency = .8
 			v.Size = UDim2.new(.8, 0, 0, 30)
-			v.Font = Enum.Font.SourceSans
+			v.Font = EnumFont
+			v.TextWrapped = true
 			v.Text = Text
 			v.TextColor3 = Color3.fromRGB(0, 0, 0)
 			v.TextSize = 14
@@ -399,7 +407,8 @@ function e:Ui(name,CanDrag)
 			e.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 			e.BackgroundTransparency = 1
 			e.Size = UDim2.new(.55, 0, 1, 0)
-			e.Font = Enum.Font.SourceSans
+			e.Font = EnumFont
+			e.TextWrapped = true
 			e.Text = Name
 			e.TextColor3 = Color3.fromRGB(0, 0, 0)
 			e.TextSize = 14
@@ -409,7 +418,7 @@ function e:Ui(name,CanDrag)
 			h.ClipsDescendants = true
 			h.Size = UDim2.new(.45, 0, 1, 0)
 			h.ClearTextOnFocus = false
-			h.Font = Enum.Font.SourceSans
+			h.Font = EnumFont
 			h.Text = Text
 			h.LayoutOrder = 1
 			h.PlaceholderText = Hint
@@ -479,7 +488,8 @@ function e:Ui(name,CanDrag)
 			e.BackgroundColor3 = Color3.fromRGB(67, 67, 67)
 			e.BackgroundTransparency = .9
 			e.Size = UDim2.new(.2, 0, 1, 0)
-			e.Font = Enum.Font.SourceSans
+			e.Font = EnumFont
+			e.TextWrapped = true
 			e.Text = "<"
 			e.TextColor3 = Color3.fromRGB(0, 0, 0)
 			e.TextSize = 14
@@ -508,7 +518,8 @@ function e:Ui(name,CanDrag)
 			g.BackgroundColor3 = Color3.fromRGB(67, 67, 67)
 			g.BackgroundTransparency = .9
 			g.Size = UDim2.new(.2, 0, 1, 0)
-			g.Font = Enum.Font.SourceSans
+			g.Font = EnumFont
+			g.TextWrapped = true
 			g.Text = ">"
 			g.LayoutOrder = 2
 			g.TextColor3 = Color3.fromRGB(0, 0, 0)
@@ -621,7 +632,7 @@ function e:Ui(name,CanDrag)
 			e.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 			e.BackgroundTransparency = 1
 			e.Size = UDim2.new(1, 0, .2, 0)
-			e.Font = Enum.Font.SourceSans
+			e.Font = EnumFont
 			e.Text = Name
 			e.TextColor3 = Color3.fromRGB(0, 0, 0)
 			e.TextSize = 14
@@ -632,7 +643,7 @@ function e:Ui(name,CanDrag)
 			f.ClipsDescendants = true
 			f.Size = UDim2.new(1, 0, .8, 0)
 			f.ClearTextOnFocus = false
-			f.Font = Enum.Font.SourceSans
+			f.Font = EnumFont
 			f.Text = Text
 			f.PlaceholderText = Hint
 			f.LayoutOrder = 1
