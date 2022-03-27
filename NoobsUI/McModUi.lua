@@ -1,7 +1,7 @@
 local e = {}
 
 function e:Ui(name,CanDrag)
-	local f = Instance.new("ScreenGui",game.Players.LocalPlayer.PlayerGui)
+	local f = Instance.new("ScreenGui",game.CoreGui)
 	f.Name = name
 	local lol = {}
 	local windowsCreated = -1
