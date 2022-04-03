@@ -898,6 +898,8 @@ do
 			end
 		end)
 		
+		function textbox:gT() return input.Text end
+		
 		return textbox
 	end
 	
