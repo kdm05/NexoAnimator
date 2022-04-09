@@ -898,9 +898,9 @@ do
 			end
 		end)
 		
-		function textbox:gT() return input.Text end
-		
-		return textbox
+		return textbox , {
+            gT = function() return input.Text end
+        }
 	end
 	
 	function section:addKeybind(title, default, callback, changedCallback)
