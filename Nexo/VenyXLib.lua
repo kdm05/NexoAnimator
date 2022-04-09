@@ -897,12 +897,10 @@ do
 				end)
 			end
 		end)
-		
-		return textbox , {
-            gT = function() return input.Text end
-        }
+
+		return textbox
 	end
-	
+
 	function section:addKeybind(title, default, callback, changedCallback)
 		local keybind = utility:Create("ImageButton", {
 			Name = "Keybind",
