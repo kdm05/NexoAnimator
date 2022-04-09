@@ -1,3 +1,4 @@
+-- init
 local player = game.Players.LocalPlayer
 local mouse = player:GetMouse()
 
@@ -8,7 +9,7 @@ local tween = game:GetService("TweenService")
 local tweeninfo = TweenInfo.new
 
 -- additional
-local utilitys = {}
+local utility = {}
 
 -- themes
 local objects = {}
@@ -22,14 +23,14 @@ local themes = {
 }
 
 do
-	function utilitys:Create(instance, properties, children)
+	function utility:Create(instance, properties, children)
 		local object = Instance.new(instance)
 		
 		for i, v in pairs(properties or {}) do
 			object[i] = v
 			
 			if typeof(v) == "Color3" then -- save for theme changer later
-				local theme = utilitys:Find(themes, v)
+				local theme = utility:Find(themes, v)
 				
 				if theme then
 					objects[theme] = objects[theme] or {}
@@ -47,16 +48,16 @@ do
 		return object
 	end
 	
-	function utilitys:Tween(instance, properties, duration, ...)
+	function utility:Tween(instance, properties, duration, ...)
 		tween:Create(instance, tweeninfo(duration, ...), properties):Play()
 	end
 	
-	function utilitys:Wait()
+	function utility:Wait()
 		run.RenderStepped:Wait()
 		return true
 	end
 	
-	function utilitys:Find(table, value) -- table.find doesn't work for dictionaries
+	function utility:Find(table, value) -- table.find doesn't work for dictionaries
 		for i, v in  pairs(table) do
 			if v == value then
 				return i
@@ -64,7 +65,7 @@ do
 		end
 	end
 	
-	function utilitys:Sort(pattern, values)
+	function utility:Sort(pattern, values)
 		local new = {}
 		pattern = pattern:lower()
 		
@@ -81,7 +82,7 @@ do
 		return new
 	end
 	
-	function utilitys:Pop(object, shrink)
+	function utility:Pop(object, shrink)
 		local clone = object:Clone()
 		
 		clone.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -92,7 +93,7 @@ do
 		clone:ClearAllChildren()
 		
 		object.ImageTransparency = 1
-		utilitys:Tween(clone, {Size = object.Size}, 0.2)
+		utility:Tween(clone, {Size = object.Size}, 0.2)
 		
 		spawn(function()
 			wait(0.2)
@@ -104,7 +105,7 @@ do
 		return clone
 	end
 	
-	function utilitys:InitializeKeybind()
+	function utility:InitializeKeybind()
 		self.keybinds = {}
 		self.ended = {}
 		
@@ -125,7 +126,7 @@ do
 		end)
 	end
 	
-	function utilitys:BindToKey(key, callback)
+	function utility:BindToKey(key, callback)
 		 
 		self.keybinds[key] = self.keybinds[key] or {}
 		
@@ -142,7 +143,7 @@ do
 		}
 	end
 	
-	function utilitys:KeyPressed() -- yield until next key is pressed
+	function utility:KeyPressed() -- yield until next key is pressed
 		local key = input.InputBegan:Wait()
 		
 		while key.UserInputType ~= Enum.UserInputType.Keyboard	 do
@@ -154,7 +155,7 @@ do
 		return key
 	end
 	
-	function utilitys:DraggingEnabled(frame, parent)
+	function utility:DraggingEnabled(frame, parent)
 	
 		parent = parent or frame
 		
@@ -191,7 +192,7 @@ do
 
 	end
 	
-	function utilitys:DraggingEnded(callback)
+	function utility:DraggingEnded(callback)
 		table.insert(self.ended, callback)
 	end
 	
@@ -211,11 +212,11 @@ do
 	-- new classes
 	
 	function library.new(title)
-		local container = utilitys:Create("ScreenGui", {
+		local container = utility:Create("ScreenGui", {
 			Name = title,
 			Parent = game.CoreGui
 		}, {
-			utilitys:Create("ImageLabel", {
+			utility:Create("ImageLabel", {
 				Name = "Main",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0.25, 0, 0.052435593, 0),
@@ -225,7 +226,7 @@ do
 				ScaleType = Enum.ScaleType.Slice,
 				SliceCenter = Rect.new(4, 4, 296, 296)
 			}, {
-				utilitys:Create("ImageLabel", {
+				utility:Create("ImageLabel", {
 					Name = "Glow",
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, -15, 0, -15),
@@ -236,7 +237,7 @@ do
 					ScaleType = Enum.ScaleType.Slice,
 					SliceCenter = Rect.new(24, 24, 276, 276)
 				}),
-				utilitys:Create("ImageLabel", {
+				utility:Create("ImageLabel", {
 					Name = "Pages",
 					BackgroundTransparency = 1,
 					ClipsDescendants = true,
@@ -248,7 +249,7 @@ do
 					ScaleType = Enum.ScaleType.Slice,
 					SliceCenter = Rect.new(4, 4, 296, 296)
 				}, {
-					utilitys:Create("ScrollingFrame", {
+					utility:Create("ScrollingFrame", {
 						Name = "Pages_Container",
 						Active = true,
 						BackgroundTransparency = 1,
@@ -257,13 +258,13 @@ do
 						CanvasSize = UDim2.new(0, 0, 0, 314),
 						ScrollBarThickness = 0
 					}, {
-						utilitys:Create("UIListLayout", {
+						utility:Create("UIListLayout", {
 							SortOrder = Enum.SortOrder.LayoutOrder,
 							Padding = UDim.new(0, 10)
 						})
 					})
 				}),
-				utilitys:Create("ImageLabel", {
+				utility:Create("ImageLabel", {
 					Name = "TopBar",
 					BackgroundTransparency = 1,
 					ClipsDescendants = true,
@@ -274,7 +275,7 @@ do
 					ScaleType = Enum.ScaleType.Slice,
 					SliceCenter = Rect.new(4, 4, 296, 296)
 				}, {
-					utilitys:Create("TextLabel", { -- title
+					utility:Create("TextLabel", { -- title
 						Name = "Title",
 						AnchorPoint = Vector2.new(0, 0.5),
 						BackgroundTransparency = 1,
@@ -291,8 +292,8 @@ do
 			})
 		})
 		
-		utilitys:InitializeKeybind()
-		utilitys:DraggingEnabled(container.Main.TopBar, container.Main)
+		utility:InitializeKeybind()
+		utility:DraggingEnabled(container.Main.TopBar, container.Main)
 		
 		return setmetatable({
 			container = container,
@@ -302,7 +303,7 @@ do
 	end
 	
 	function page.new(library, title, icon)
-		local button = utilitys:Create("TextButton", {
+		local button = utility:Create("TextButton", {
 			Name = title,
 			Parent = library.pagesContainer,
 			BackgroundTransparency = 1,
@@ -314,7 +315,7 @@ do
 			Text = "",
 			TextSize = 14
 		}, {
-			utilitys:Create("TextLabel", {
+			utility:Create("TextLabel", {
 				Name = "Title",
 				AnchorPoint = Vector2.new(0, 0.5),
 				BackgroundTransparency = 1,
@@ -328,7 +329,7 @@ do
 				TextTransparency = 0.65,
 				TextXAlignment = Enum.TextXAlignment.Left
 			}),
-			icon and utilitys:Create("ImageLabel", {
+			icon and utility:Create("ImageLabel", {
 				Name = "Icon", 
 				AnchorPoint = Vector2.new(0, 0.5),
 				BackgroundTransparency = 1,
@@ -342,7 +343,7 @@ do
 			}) or {}
 		})
 		
-		local container = utilitys:Create("ScrollingFrame", {
+		local container = utility:Create("ScrollingFrame", {
 			Name = title,
 			Parent = library.container.Main,
 			Active = true,
@@ -355,7 +356,7 @@ do
 			ScrollBarImageColor3 = themes.DarkContrast,
 			Visible = false
 		}, {
-			utilitys:Create("UIListLayout", {
+			utility:Create("UIListLayout", {
 				SortOrder = Enum.SortOrder.LayoutOrder,
 				Padding = UDim.new(0, 10)
 			})
@@ -370,7 +371,7 @@ do
 	end
 	
 	function section.new(page, title)
-		local container = utilitys:Create("ImageLabel", {
+		local container = utility:Create("ImageLabel", {
 			Name = title,
 			Parent = page.container,
 			BackgroundTransparency = 1,
@@ -382,7 +383,7 @@ do
 			SliceCenter = Rect.new(4, 4, 296, 296),
 			ClipsDescendants = true
 		}, {
-			utilitys:Create("Frame", {
+			utility:Create("Frame", {
 				Name = "Container",
 				Active = true,
 				BackgroundTransparency = 1,
@@ -390,7 +391,7 @@ do
 				Position = UDim2.new(0, 8, 0, 8),
 				Size = UDim2.new(1, -16, 1, -16)
 			}, {
-				utilitys:Create("TextLabel", {
+				utility:Create("TextLabel", {
 					Name = "Title",
 					BackgroundTransparency = 1,
 					Size = UDim2.new(1, 0, 0, 20),
@@ -402,7 +403,7 @@ do
 					TextXAlignment = Enum.TextXAlignment.Left,
 					TextTransparency = 1
 				}),
-				utilitys:Create("UIListLayout", {
+				utility:Create("UIListLayout", {
 					SortOrder = Enum.SortOrder.LayoutOrder,
 					Padding = UDim.new(0, 4)
 				})
@@ -469,13 +470,13 @@ do
 		local topbar = container.TopBar
 		
 		if self.position then
-			utilitys:Tween(container, {
+			utility:Tween(container, {
 				Size = UDim2.new(0, 511, 0, 428),
 				Position = self.position
 			}, 0.2)
 			wait(0.2)
 			
-			utilitys:Tween(topbar, {Size = UDim2.new(1, 0, 0, 38)}, 0.2)
+			utility:Tween(topbar, {Size = UDim2.new(1, 0, 0, 38)}, 0.2)
 			wait(0.2)
 			
 			container.ClipsDescendants = false
@@ -484,10 +485,10 @@ do
 			self.position = container.Position
 			container.ClipsDescendants = true
 			
-			utilitys:Tween(topbar, {Size = UDim2.new(1, 0, 1, 0)}, 0.2)
+			utility:Tween(topbar, {Size = UDim2.new(1, 0, 1, 0)}, 0.2)
 			wait(0.2)
 			
-			utilitys:Tween(container, {
+			utility:Tween(container, {
 				Size = UDim2.new(0, 511, 0, 0),
 				Position = self.position + UDim2.new(0, 0, 0, 428)
 			}, 0.2)
@@ -507,7 +508,7 @@ do
 		end
 		
 		-- standard create
-		local notification = utilitys:Create("ImageLabel", {
+		local notification = utility:Create("ImageLabel", {
 			Name = "Notification",
 			Parent = self.container,
 			BackgroundTransparency = 1,
@@ -519,7 +520,7 @@ do
 			ZIndex = 3,
 			ClipsDescendants = true
 		}, {
-			utilitys:Create("ImageLabel", {
+			utility:Create("ImageLabel", {
 				Name = "Flash",
 				Size = UDim2.new(1, 0, 1, 0),
 				BackgroundTransparency = 1,
@@ -527,7 +528,7 @@ do
 				ImageColor3 = themes.TextColor,
 				ZIndex = 5
 			}),
-			utilitys:Create("ImageLabel", {
+			utility:Create("ImageLabel", {
 				Name = "Glow",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, -15, 0, -15),
@@ -538,7 +539,7 @@ do
 				ScaleType = Enum.ScaleType.Slice,
 				SliceCenter = Rect.new(24, 24, 276, 276)
 			}),
-			utilitys:Create("TextLabel", {
+			utility:Create("TextLabel", {
 				Name = "Title",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 10, 0, 8),
@@ -549,7 +550,7 @@ do
 				TextSize = 14.000,
 				TextXAlignment = Enum.TextXAlignment.Left
 			}),
-			utilitys:Create("TextLabel", {
+			utility:Create("TextLabel", {
 				Name = "Text",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 10, 1, -24),
@@ -560,7 +561,7 @@ do
 				TextSize = 12.000,
 				TextXAlignment = Enum.TextXAlignment.Left
 			}),
-			utilitys:Create("ImageButton", {
+			utility:Create("ImageButton", {
 				Name = "Accept",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(1, -26, 0, 8),
@@ -569,7 +570,7 @@ do
 				ImageColor3 = themes.TextColor,
 				ZIndex = 4
 			}),
-			utilitys:Create("ImageButton", {
+			utility:Create("ImageButton", {
 				Name = "Decline",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(1, -26, 1, -24),
@@ -581,7 +582,7 @@ do
 		})
 		
 		-- dragging
-		utilitys:DraggingEnabled(notification)
+		utility:DraggingEnabled(notification)
 		
 		-- position and size
 		title = title or "Notification"
@@ -596,11 +597,11 @@ do
 		notification.Position = library.lastNotification or UDim2.new(0, padding, 1, -(notification.AbsoluteSize.Y + padding))
 		notification.Size = UDim2.new(0, 0, 0, 60)
 		
-		utilitys:Tween(notification, {Size = UDim2.new(0, textSize.X + 70, 0, 60)}, 0.2)
+		utility:Tween(notification, {Size = UDim2.new(0, textSize.X + 70, 0, 60)}, 0.2)
 		wait(0.2)
 		
 		notification.ClipsDescendants = false
-		utilitys:Tween(notification.Flash, {
+		utility:Tween(notification.Flash, {
 			Size = UDim2.new(0, 0, 0, 60),
 			Position = UDim2.new(1, 0, 0, 0)
 		}, 0.2)
@@ -618,10 +619,10 @@ do
 			
 			library.lastNotification = notification.Position
 			notification.Flash.Position = UDim2.new(0, 0, 0, 0)
-			utilitys:Tween(notification.Flash, {Size = UDim2.new(1, 0, 1, 0)}, 0.2)
+			utility:Tween(notification.Flash, {Size = UDim2.new(1, 0, 1, 0)}, 0.2)
 			
 			wait(0.2)
-			utilitys:Tween(notification, {
+			utility:Tween(notification, {
 				Size = UDim2.new(0, 0, 0, 60),
 				Position = notification.Position + UDim2.new(0, textSize.X + 70, 0, 0)
 			}, 0.2)
@@ -660,7 +661,7 @@ do
 	end
 	
 	function section:addButton(title, callback)
-		local button = utilitys:Create("ImageButton", {
+		local button = utility:Create("ImageButton", {
 			Name = "Button",
 			Parent = self.container,
 			BackgroundTransparency = 1,
@@ -672,7 +673,7 @@ do
 			ScaleType = Enum.ScaleType.Slice,
 			SliceCenter = Rect.new(2, 2, 298, 298)
 		}, {
-			utilitys:Create("TextLabel", {
+			utility:Create("TextLabel", {
 				Name = "Title",
 				BackgroundTransparency = 1,
 				Size = UDim2.new(1, 0, 1, 0),
@@ -698,14 +699,14 @@ do
 			end
 			
 			-- animation
-			utilitys:Pop(button, 10)
+			utility:Pop(button, 10)
 			
 			debounce = true
 			text.TextSize = 0
-			utilitys:Tween(button.Title, {TextSize = 14}, 0.2)
+			utility:Tween(button.Title, {TextSize = 14}, 0.2)
 			
 			wait(0.2)
-			utilitys:Tween(button.Title, {TextSize = 12}, 0.2)
+			utility:Tween(button.Title, {TextSize = 12}, 0.2)
 			
 			if callback then
 				callback(function(...)
@@ -720,7 +721,7 @@ do
 	end
 	
 	function section:addToggle(title, default, callback)
-		local toggle = utilitys:Create("ImageButton", {
+		local toggle = utility:Create("ImageButton", {
 			Name = "Toggle",
 			Parent = self.container,
 			BackgroundTransparency = 1,
@@ -732,7 +733,7 @@ do
 			ScaleType = Enum.ScaleType.Slice,
 			SliceCenter = Rect.new(2, 2, 298, 298)
 		},{
-			utilitys:Create("TextLabel", {
+			utility:Create("TextLabel", {
 				Name = "Title",
 				AnchorPoint = Vector2.new(0, 0.5),
 				BackgroundTransparency = 1,
@@ -746,7 +747,7 @@ do
 				TextTransparency = 0.10000000149012,
 				TextXAlignment = Enum.TextXAlignment.Left
 			}),
-			utilitys:Create("ImageLabel", {
+			utility:Create("ImageLabel", {
 				Name = "Button",
 				BackgroundTransparency = 1,
 				BorderSizePixel = 0,
@@ -758,7 +759,7 @@ do
 				ScaleType = Enum.ScaleType.Slice,
 				SliceCenter = Rect.new(2, 2, 298, 298)
 			}, {
-				utilitys:Create("ImageLabel", {
+				utility:Create("ImageLabel", {
 					Name = "Frame",
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, 2, 0.5, -6),
@@ -793,7 +794,7 @@ do
 	end
 	
 	function section:addTextbox(title, default, callback)
-		local textbox = utilitys:Create("ImageButton", {
+		local textbox = utility:Create("ImageButton", {
 			Name = "Textbox",
 			Parent = self.container,
 			BackgroundTransparency = 1,
@@ -805,7 +806,7 @@ do
 			ScaleType = Enum.ScaleType.Slice,
 			SliceCenter = Rect.new(2, 2, 298, 298)
 		}, {
-			utilitys:Create("TextLabel", {
+			utility:Create("TextLabel", {
 				Name = "Title",
 				AnchorPoint = Vector2.new(0, 0.5),
 				BackgroundTransparency = 1,
@@ -819,7 +820,7 @@ do
 				TextTransparency = 0.10000000149012,
 				TextXAlignment = Enum.TextXAlignment.Left
 			}),
-			utilitys:Create("ImageLabel", {
+			utility:Create("ImageLabel", {
 				Name = "Button",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(1, -110, 0.5, -8),
@@ -830,7 +831,7 @@ do
 				ScaleType = Enum.ScaleType.Slice,
 				SliceCenter = Rect.new(2, 2, 298, 298)
 			}, {
-				utilitys:Create("TextBox", {
+				utility:Create("TextBox", {
 					Name = "Textbox", 
 					BackgroundTransparency = 1,
 					TextTruncate = Enum.TextTruncate.AtEnd,
@@ -857,7 +858,7 @@ do
 				return
 			end
 			
-			utilitys:Tween(textbox.Button, {
+			utility:Tween(textbox.Button, {
 				Size = UDim2.new(0, 200, 0, 16),
 				Position = UDim2.new(1, -210, 0.5, -8)
 			}, 0.2)
@@ -871,7 +872,7 @@ do
 		input:GetPropertyChangedSignal("Text"):Connect(function()
 			
 			if button.ImageTransparency == 0 and (button.Size == UDim2.new(0, 200, 0, 16) or button.Size == UDim2.new(0, 100, 0, 16)) then -- i know, i dont like this either
-				utilitys:Pop(button, 10)
+				utility:Pop(button, 10)
 			end
 			
 			if callback then
@@ -885,7 +886,7 @@ do
 			
 			input.TextXAlignment = Enum.TextXAlignment.Center
 			
-			utilitys:Tween(textbox.Button, {
+			utility:Tween(textbox.Button, {
 				Size = UDim2.new(0, 100, 0, 16),
 				Position = UDim2.new(1, -110, 0.5, -8)
 			}, 0.2)
@@ -903,7 +904,7 @@ do
 	end
 	
 	function section:addKeybind(title, default, callback, changedCallback)
-		local keybind = utilitys:Create("ImageButton", {
+		local keybind = utility:Create("ImageButton", {
 			Name = "Keybind",
 			Parent = self.container,
 			BackgroundTransparency = 1,
@@ -915,7 +916,7 @@ do
 			ScaleType = Enum.ScaleType.Slice,
 			SliceCenter = Rect.new(2, 2, 298, 298)
 		}, {
-			utilitys:Create("TextLabel", {
+			utility:Create("TextLabel", {
 				Name = "Title",
 				AnchorPoint = Vector2.new(0, 0.5),
 				BackgroundTransparency = 1,
@@ -929,7 +930,7 @@ do
 				TextTransparency = 0.10000000149012,
 				TextXAlignment = Enum.TextXAlignment.Left
 			}),
-			utilitys:Create("ImageLabel", {
+			utility:Create("ImageLabel", {
 				Name = "Button",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(1, -110, 0.5, -8),
@@ -940,7 +941,7 @@ do
 				ScaleType = Enum.ScaleType.Slice,
 				SliceCenter = Rect.new(2, 2, 298, 298)
 			}, {
-				utilitys:Create("TextLabel", {
+				utility:Create("TextLabel", {
 					Name = "Text",
 					BackgroundTransparency = 1,
 					ClipsDescendants = true,
@@ -962,7 +963,7 @@ do
 		
 		local animate = function()
 			if button.ImageTransparency == 0 then
-				utilitys:Pop(button, 10)
+				utility:Pop(button, 10)
 			end
 		end
 		
@@ -991,7 +992,7 @@ do
 			if text.Text == "None" then -- new bind
 				text.Text = "..."
 				
-				local key = utilitys:KeyPressed()
+				local key = utility:KeyPressed()
 				
 				self:updateKeybind(keybind, nil, key.KeyCode)
 				animate()
@@ -1008,7 +1009,7 @@ do
 	end
 	
 	function section:addColorPicker(title, default, callback)
-		local colorpicker = utilitys:Create("ImageButton", {
+		local colorpicker = utility:Create("ImageButton", {
 			Name = "ColorPicker",
 			Parent = self.container,
 			BackgroundTransparency = 1,
@@ -1020,7 +1021,7 @@ do
 			ScaleType = Enum.ScaleType.Slice,
 			SliceCenter = Rect.new(2, 2, 298, 298)
 		},{
-			utilitys:Create("TextLabel", {
+			utility:Create("TextLabel", {
 				Name = "Title",
 				AnchorPoint = Vector2.new(0, 0.5),
 				BackgroundTransparency = 1,
@@ -1034,7 +1035,7 @@ do
 				TextTransparency = 0.10000000149012,
 				TextXAlignment = Enum.TextXAlignment.Left
 			}),
-			utilitys:Create("ImageButton", {
+			utility:Create("ImageButton", {
 				Name = "Button",
 				BackgroundTransparency = 1,
 				BorderSizePixel = 0,
@@ -1048,7 +1049,7 @@ do
 			})
 		})
 		
-		local tab = utilitys:Create("ImageLabel", {
+		local tab = utility:Create("ImageLabel", {
 			Name = "ColorPicker",
 			Parent = self.page.library.container,
 			BackgroundTransparency = 1,
@@ -1062,7 +1063,7 @@ do
 			SliceCenter = Rect.new(2, 2, 298, 298),
 			Visible = false,
 		}, {
-			utilitys:Create("ImageLabel", {
+			utility:Create("ImageLabel", {
 				Name = "Glow",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, -15, 0, -15),
@@ -1073,7 +1074,7 @@ do
 				ScaleType = Enum.ScaleType.Slice,
 				SliceCenter = Rect.new(22, 22, 278, 278)
 			}),
-			utilitys:Create("TextLabel", {
+			utility:Create("TextLabel", {
 				Name = "Title",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 10, 0, 8),
@@ -1085,7 +1086,7 @@ do
 				TextSize = 14,
 				TextXAlignment = Enum.TextXAlignment.Left
 			}),
-			utilitys:Create("ImageButton", {
+			utility:Create("ImageButton", {
 				Name = "Close",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(1, -26, 0, 8),
@@ -1094,17 +1095,17 @@ do
 				Image = "rbxassetid://5012538583",
 				ImageColor3 = themes.TextColor
 			}), 
-			utilitys:Create("Frame", {
+			utility:Create("Frame", {
 				Name = "Container",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 8, 0, 32),
 				Size = UDim2.new(1, -18, 1, -40)
 			}, {
-				utilitys:Create("UIListLayout", {
+				utility:Create("UIListLayout", {
 					SortOrder = Enum.SortOrder.LayoutOrder,
 					Padding = UDim.new(0, 6)
 				}),
-				utilitys:Create("ImageButton", {
+				utility:Create("ImageButton", {
 					Name = "Canvas",
 					BackgroundTransparency = 1,
 					BorderColor3 = themes.LightContrast,
@@ -1115,21 +1116,21 @@ do
 					ScaleType = Enum.ScaleType.Slice,
 					SliceCenter = Rect.new(2, 2, 298, 298)
 				}, {
-					utilitys:Create("ImageLabel", {
+					utility:Create("ImageLabel", {
 						Name = "White_Overlay",
 						BackgroundTransparency = 1,
 						Size = UDim2.new(1, 0, 0, 60),
 						Image = "rbxassetid://5107152351",
 						SliceCenter = Rect.new(2, 2, 298, 298)
 					}),
-					utilitys:Create("ImageLabel", {
+					utility:Create("ImageLabel", {
 						Name = "Black_Overlay",
 						BackgroundTransparency = 1,
 						Size = UDim2.new(1, 0, 0, 60),
 						Image = "rbxassetid://5107152095",
 						SliceCenter = Rect.new(2, 2, 298, 298)
 					}),
-					utilitys:Create("ImageLabel", {
+					utility:Create("ImageLabel", {
 						Name = "Cursor",
 						BackgroundColor3 = themes.TextColor,
 						AnchorPoint = Vector2.new(0.5, 0.5),
@@ -1140,7 +1141,7 @@ do
 						SliceCenter = Rect.new(2, 2, 298, 298)
 					})
 				}),
-				utilitys:Create("ImageButton", {
+				utility:Create("ImageButton", {
 					Name = "Color",
 					BackgroundTransparency = 1,
 					BorderSizePixel = 0,
@@ -1153,7 +1154,7 @@ do
 					ScaleType = Enum.ScaleType.Slice,
 					SliceCenter = Rect.new(2, 2, 298, 298)
 				}, {
-					utilitys:Create("Frame", {
+					utility:Create("Frame", {
 						Name = "Select",
 						BackgroundColor3 = themes.TextColor,
 						BorderSizePixel = 1,
@@ -1161,7 +1162,7 @@ do
 						Size = UDim2.new(0, 2, 1, 0),
 						ZIndex = 2
 					}),
-					utilitys:Create("UIGradient", { -- rainbow canvas
+					utility:Create("UIGradient", { -- rainbow canvas
 						Color = ColorSequence.new({
 							ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 0, 0)), 
 							ColorSequenceKeypoint.new(0.17, Color3.fromRGB(255, 255, 0)), 
@@ -1173,18 +1174,18 @@ do
 						})
 					})
 				}),
-				utilitys:Create("Frame", {
+				utility:Create("Frame", {
 					Name = "Inputs",
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, 10, 0, 158),
 					Size = UDim2.new(1, 0, 0, 16)
 				}, {
-					utilitys:Create("UIListLayout", {
+					utility:Create("UIListLayout", {
 						FillDirection = Enum.FillDirection.Horizontal,
 						SortOrder = Enum.SortOrder.LayoutOrder,
 						Padding = UDim.new(0, 6)
 					}),
-					utilitys:Create("ImageLabel", {
+					utility:Create("ImageLabel", {
 						Name = "R",
 						BackgroundTransparency = 1,
 						BorderSizePixel = 0,
@@ -1195,7 +1196,7 @@ do
 						ScaleType = Enum.ScaleType.Slice,
 						SliceCenter = Rect.new(2, 2, 298, 298)
 					}, {
-						utilitys:Create("TextLabel", {
+						utility:Create("TextLabel", {
 							Name = "Text",
 							BackgroundTransparency = 1,
 							Size = UDim2.new(0.400000006, 0, 1, 0),
@@ -1205,7 +1206,7 @@ do
 							TextColor3 = themes.TextColor,
 							TextSize = 10.000
 						}),
-						utilitys:Create("TextBox", {
+						utility:Create("TextBox", {
 							Name = "Textbox",
 							BackgroundTransparency = 1,
 							Position = UDim2.new(0.300000012, 0, 0, 0),
@@ -1218,7 +1219,7 @@ do
 							TextSize = 10.000
 						})
 					}),
-					utilitys:Create("ImageLabel", {
+					utility:Create("ImageLabel", {
 						Name = "G",
 						BackgroundTransparency = 1,
 						BorderSizePixel = 0,
@@ -1229,7 +1230,7 @@ do
 						ScaleType = Enum.ScaleType.Slice,
 						SliceCenter = Rect.new(2, 2, 298, 298)
 					}, {
-						utilitys:Create("TextLabel", {
+						utility:Create("TextLabel", {
 							Name = "Text",
 							BackgroundTransparency = 1,
 							ZIndex = 2,
@@ -1239,7 +1240,7 @@ do
 							TextColor3 = themes.TextColor,
 							TextSize = 10.000
 						}),
-						utilitys:Create("TextBox", {
+						utility:Create("TextBox", {
 							Name = "Textbox",
 							BackgroundTransparency = 1,
 							Position = UDim2.new(0.300000012, 0, 0, 0),
@@ -1251,7 +1252,7 @@ do
 							TextSize = 10.000
 						})
 					}),
-					utilitys:Create("ImageLabel", {
+					utility:Create("ImageLabel", {
 						Name = "B",
 						BackgroundTransparency = 1,
 						BorderSizePixel = 0,
@@ -1262,7 +1263,7 @@ do
 						ScaleType = Enum.ScaleType.Slice,
 						SliceCenter = Rect.new(2, 2, 298, 298)
 					}, {
-						utilitys:Create("TextLabel", {
+						utility:Create("TextLabel", {
 							Name = "Text",
 							BackgroundTransparency = 1,
 							Size = UDim2.new(0.400000006, 0, 1, 0),
@@ -1272,7 +1273,7 @@ do
 							TextColor3 = themes.TextColor,
 							TextSize = 10.000
 						}),
-						utilitys:Create("TextBox", {
+						utility:Create("TextBox", {
 							Name = "Textbox",
 							BackgroundTransparency = 1,
 							Position = UDim2.new(0.300000012, 0, 0, 0),
@@ -1285,7 +1286,7 @@ do
 						})
 					}),
 				}),
-				utilitys:Create("ImageButton", {
+				utility:Create("ImageButton", {
 					Name = "Button",
 					BackgroundTransparency = 1,
 					BorderSizePixel = 0,
@@ -1296,7 +1297,7 @@ do
 					ScaleType = Enum.ScaleType.Slice,
 					SliceCenter = Rect.new(2, 2, 298, 298)
 				}, {
-					utilitys:Create("TextLabel", {
+					utility:Create("TextLabel", {
 						Name = "Text",
 						BackgroundTransparency = 1,
 						Size = UDim2.new(1, 0, 1, 0),
@@ -1310,7 +1311,7 @@ do
 			})
 		})
 		
-		utilitys:DraggingEnabled(tab)
+		utility:DraggingEnabled(tab)
 		table.insert(self.modules, colorpicker)
 		--self:Resize()
 		
@@ -1350,7 +1351,7 @@ do
 			end
 		end
 		
-		utilitys:DraggingEnded(function()
+		utility:DraggingEnded(function()
 			draggingColor, draggingCanvas = false, false
 		end)
 		
@@ -1417,10 +1418,10 @@ do
 				end
 				
 				self:updateColorPicker(colorpicker, nil, {hue, sat, brightness}) -- roblox is literally retarded
-				utilitys:Tween(canvas.Cursor, {Position = UDim2.new(sat, 0, 1 - brightness, 0)}, 0.1) -- overwrite
+				utility:Tween(canvas.Cursor, {Position = UDim2.new(sat, 0, 1 - brightness, 0)}, 0.1) -- overwrite
 				
 				callback(color3)
-				utilitys:Wait()
+				utility:Wait()
 			end
 		end)
 		
@@ -1438,10 +1439,10 @@ do
 				
 				local x = hue -- hue is updated
 				self:updateColorPicker(colorpicker, nil, {hue, sat, brightness}) -- roblox is literally retarded
-				utilitys:Tween(tab.Container.Color.Select, {Position = UDim2.new(x, 0, 0, 0)}, 0.1) -- overwrite
+				utility:Tween(tab.Container.Color.Select, {Position = UDim2.new(x, 0, 0, 0)}, 0.1) -- overwrite
 				
 				callback(color3)
-				utilitys:Wait()
+				utility:Wait()
 			end
 		end)
 		
@@ -1460,7 +1461,7 @@ do
 				
 				if debounce then
 					while debounce do
-						utilitys:Wait()
+						utility:Wait()
 					end
 				end
 			elseif not overwrite then
@@ -1469,7 +1470,7 @@ do
 				end
 				
 				if button.ImageTransparency == 0 then
-					utilitys:Pop(button, 10)
+					utility:Pop(button, 10)
 				end
 			end
 			
@@ -1493,7 +1494,7 @@ do
 				tab.Size = UDim2.new(0, 0, 0, 0)
 				
 				tab.Position = UDim2.new(0, x1 + x2 + px, 0, py)
-				utilitys:Tween(tab, {Size = UDim2.new(0, 162, 0, 169)}, 0.2)
+				utility:Tween(tab, {Size = UDim2.new(0, 162, 0, 169)}, 0.2)
 				
 				-- update size and position
 				wait(0.2)
@@ -1502,7 +1503,7 @@ do
 				canvasSize, canvasPosition = canvas.AbsoluteSize, canvas.AbsolutePosition
 				colorSize, colorPosition = color.AbsoluteSize, color.AbsolutePosition
 			else
-				utilitys:Tween(tab, {Size = UDim2.new(0, 0, 0, 0)}, 0.2)
+				utility:Tween(tab, {Size = UDim2.new(0, 0, 0, 0)}, 0.2)
 				tab.ClipsDescendants = true
 				
 				wait(0.2)
@@ -1532,7 +1533,7 @@ do
 	end
 	
 	function section:addSlider(title, default, min, max, callback)
-		local slider = utilitys:Create("ImageButton", {
+		local slider = utility:Create("ImageButton", {
 			Name = "Slider",
 			Parent = self.container,
 			BackgroundTransparency = 1,
@@ -1545,7 +1546,7 @@ do
 			ScaleType = Enum.ScaleType.Slice,
 			SliceCenter = Rect.new(2, 2, 298, 298)
 		}, {
-			utilitys:Create("TextLabel", {
+			utility:Create("TextLabel", {
 				Name = "Title",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 10, 0, 6),
@@ -1558,7 +1559,7 @@ do
 				TextTransparency = 0.10000000149012,
 				TextXAlignment = Enum.TextXAlignment.Left
 			}),
-			utilitys:Create("TextBox", {
+			utility:Create("TextBox", {
 				Name = "TextBox",
 				BackgroundTransparency = 1,
 				BorderSizePixel = 0,
@@ -1571,7 +1572,7 @@ do
 				TextSize = 12,
 				TextXAlignment = Enum.TextXAlignment.Right
 			}),
-			utilitys:Create("TextLabel", {
+			utility:Create("TextLabel", {
 				Name = "Slider",
 				BackgroundTransparency = 1,
 				Position = UDim2.new(0, 10, 0, 28),
@@ -1579,7 +1580,7 @@ do
 				ZIndex = 3,
 				Text = "",
 			}, {
-				utilitys:Create("ImageLabel", {
+				utility:Create("ImageLabel", {
 					Name = "Bar",
 					AnchorPoint = Vector2.new(0, 0.5),
 					BackgroundTransparency = 1,
@@ -1591,7 +1592,7 @@ do
 					ScaleType = Enum.ScaleType.Slice,
 					SliceCenter = Rect.new(2, 2, 298, 298)
 				}, {
-					utilitys:Create("ImageLabel", {
+					utility:Create("ImageLabel", {
 						Name = "Fill",
 						BackgroundTransparency = 1,
 						Size = UDim2.new(0.8, 0, 1, 0),
@@ -1601,7 +1602,7 @@ do
 						ScaleType = Enum.ScaleType.Slice,
 						SliceCenter = Rect.new(2, 2, 298, 298)
 					}, {
-						utilitys:Create("ImageLabel", {
+						utility:Create("ImageLabel", {
 							Name = "Circle",
 							AnchorPoint = Vector2.new(0.5, 0.5),
 							BackgroundTransparency = 1,
@@ -1642,7 +1643,7 @@ do
 		
 		self:updateSlider(slider, nil, value, min, max)
 		
-		utilitys:DraggingEnded(function()
+		utility:DraggingEnded(function()
 			dragging = false
 		end)
 
@@ -1650,16 +1651,16 @@ do
 			dragging = true
 			
 			while dragging do
-				utilitys:Tween(circle, {ImageTransparency = 0}, 0.1)
+				utility:Tween(circle, {ImageTransparency = 0}, 0.1)
 				
 				value = self:updateSlider(slider, nil, nil, min, max, value)
 				callback(value)
 				
-				utilitys:Wait()
+				utility:Wait()
 			end
 			
 			wait(0.5)
-			utilitys:Tween(circle, {ImageTransparency = 1}, 0.2)
+			utility:Tween(circle, {ImageTransparency = 1}, 0.2)
 		end)
 		
 		textbox.FocusLost:Connect(function()
@@ -1684,18 +1685,18 @@ do
 	end
 	
 	function section:addDropdown(title, list, callback)
-		local dropdown = utilitys:Create("Frame", {
+		local dropdown = utility:Create("Frame", {
 			Name = "Dropdown",
 			Parent = self.container,
 			BackgroundTransparency = 1,
 			Size = UDim2.new(1, 0, 0, 30),
 			ClipsDescendants = true
 		}, {
-			utilitys:Create("UIListLayout", {
+			utility:Create("UIListLayout", {
 				SortOrder = Enum.SortOrder.LayoutOrder,
 				Padding = UDim.new(0, 4)
 			}),
-			utilitys:Create("ImageLabel", {
+			utility:Create("ImageLabel", {
 				Name = "Search",
 				BackgroundTransparency = 1,
 				BorderSizePixel = 0,
@@ -1706,7 +1707,7 @@ do
 				ScaleType = Enum.ScaleType.Slice,
 				SliceCenter = Rect.new(2, 2, 298, 298)
 			}, {
-				utilitys:Create("TextBox", {
+				utility:Create("TextBox", {
 					Name = "TextBox",
 					AnchorPoint = Vector2.new(0, 0.5),
 					BackgroundTransparency = 1,
@@ -1721,7 +1722,7 @@ do
 					TextTransparency = 0.10000000149012,
 					TextXAlignment = Enum.TextXAlignment.Left
 				}),
-				utilitys:Create("ImageButton", {
+				utility:Create("ImageButton", {
 					Name = "Button",
 					BackgroundTransparency = 1,
 					BorderSizePixel = 0,
@@ -1733,7 +1734,7 @@ do
 					SliceCenter = Rect.new(2, 2, 298, 298)
 				})
 			}),
-			utilitys:Create("ImageLabel", {
+			utility:Create("ImageLabel", {
 				Name = "List",
 				BackgroundTransparency = 1,
 				BorderSizePixel = 0,
@@ -1744,7 +1745,7 @@ do
 				ScaleType = Enum.ScaleType.Slice,
 				SliceCenter = Rect.new(2, 2, 298, 298)
 			}, {
-				utilitys:Create("ScrollingFrame", {
+				utility:Create("ScrollingFrame", {
 					Name = "Frame",
 					Active = true,
 					BackgroundTransparency = 1,
@@ -1757,7 +1758,7 @@ do
 					ScrollBarThickness = 3,
 					ScrollBarImageColor3 = themes.DarkContrast
 				}, {
-					utilitys:Create("UIListLayout", {
+					utility:Create("UIListLayout", {
 						SortOrder = Enum.SortOrder.LayoutOrder,
 						Padding = UDim.new(0, 4)
 					})
@@ -1795,7 +1796,7 @@ do
 		
 		search.TextBox:GetPropertyChangedSignal("Text"):Connect(function()
 			if focused then
-				local list = utilitys:Sort(search.TextBox.Text, list)
+				local list = utility:Sort(search.TextBox.Text, list)
 				list = #list ~= 0 and list 
 				
 				self:updateDropdown(dropdown, nil, list, callback)
@@ -1850,7 +1851,7 @@ do
 				for i = existingSections, #page.sections + 1, -1 do
 					local section = focusedPage.sections[i].container.Parent
 					
-					utilitys:Tween(section, {ImageTransparency = 1}, 0.1)
+					utility:Tween(section, {ImageTransparency = 1}, 0.1)
 				end
 			end
 			
@@ -1866,7 +1867,7 @@ do
 					local section = page.sections[i].container.Parent
 					
 					section.ImageTransparency = 1
-					utilitys:Tween(section, {ImageTransparency = 0}, 0.05)
+					utility:Tween(section, {ImageTransparency = 0}, 0.05)
 				end
 			end
 			
@@ -1874,7 +1875,7 @@ do
 			
 			for i, section in pairs(page.sections) do
 			
-				utilitys:Tween(section.container.Title, {TextTransparency = 0}, 0.1)
+				utility:Tween(section.container.Title, {TextTransparency = 0}, 0.1)
 				section:Resize(true)
 				
 				wait(0.05)
@@ -1893,8 +1894,8 @@ do
 			
 			-- sections
 			for i, section in pairs(page.sections) do	
-				utilitys:Tween(section.container.Parent, {Size = UDim2.new(1, -10, 0, 28)}, 0.1)
-				utilitys:Tween(section.container.Title, {TextTransparency = 1}, 0.1)
+				utility:Tween(section.container.Parent, {Size = UDim2.new(1, -10, 0, 28)}, 0.1)
+				utility:Tween(section.container.Title, {TextTransparency = 1}, 0.1)
 			end
 			
 			wait(0.1)
@@ -1916,7 +1917,7 @@ do
 		self.container.ScrollBarImageTransparency = size > self.container.AbsoluteSize.Y
 		
 		if scroll then
-			utilitys:Tween(self.container, {CanvasPosition = Vector2.new(0, self.lastPosition or 0)}, 0.2)
+			utility:Tween(self.container, {CanvasPosition = Vector2.new(0, self.lastPosition or 0)}, 0.2)
 		end
 	end
 	
@@ -1934,7 +1935,7 @@ do
 		end
 		
 		if smooth then
-			utilitys:Tween(self.container.Parent, {Size = UDim2.new(1, -10, 0, size)}, 0.05)
+			utility:Tween(self.container.Parent, {Size = UDim2.new(1, -10, 0, size)}, 0.05)
 		else
 			self.container.Parent.Size = UDim2.new(1, -10, 0, size)
 			self.page:Resize()
@@ -1979,13 +1980,13 @@ do
 			toggle.Title.Text = title
 		end
 		
-		utilitys:Tween(frame, {
+		utility:Tween(frame, {
 			Size = UDim2.new(1, -22, 1, -9),
 			Position = position[value] + UDim2.new(0, 0, 0, 2.5)
 		}, 0.2)
 		
 		wait(0.1)
-		utilitys:Tween(frame, {
+		utility:Tween(frame, {
 			Size = UDim2.new(1, -22, 1, -4),
 			Position = position[value]
 		}, 0.1)
@@ -2019,7 +2020,7 @@ do
 		end
 			
 		if key then
-			self.binds[keybind].connection = utilitys:BindToKey(key, bind.callback)
+			self.binds[keybind].connection = utility:BindToKey(key, bind.callback)
 			text.Text = key.Name
 		else
 			text.Text = "None"
@@ -2049,11 +2050,11 @@ do
 			hue, sat, brightness = Color3.toHSV(color3)
 		end
 		
-		utilitys:Tween(colorpicker.Button, {ImageColor3 = color3}, 0.5)
-		utilitys:Tween(tab.Container.Color.Select, {Position = UDim2.new(hue, 0, 0, 0)}, 0.1)
+		utility:Tween(colorpicker.Button, {ImageColor3 = color3}, 0.5)
+		utility:Tween(tab.Container.Color.Select, {Position = UDim2.new(hue, 0, 0, 0)}, 0.1)
 		
-		utilitys:Tween(tab.Container.Canvas, {ImageColor3 = Color3.fromHSV(hue, 1, 1)}, 0.5)
-		utilitys:Tween(tab.Container.Canvas.Cursor, {Position = UDim2.new(sat, 0, 1 - brightness)}, 0.5)
+		utility:Tween(tab.Container.Canvas, {ImageColor3 = Color3.fromHSV(hue, 1, 1)}, 0.5)
+		utility:Tween(tab.Container.Canvas.Cursor, {Position = UDim2.new(sat, 0, 1 - brightness)}, 0.5)
 		
 		for i, container in pairs(tab.Container.Inputs:GetChildren()) do
 			if container:IsA("ImageLabel") then
@@ -2083,10 +2084,10 @@ do
 		value = value or math.floor(min + (max - min) * percent)
 		
 		slider.TextBox.Text = value
-		utilitys:Tween(bar.Fill, {Size = UDim2.new(percent, 0, 1, 0)}, 0.1)
+		utility:Tween(bar.Fill, {Size = UDim2.new(percent, 0, 1, 0)}, 0.1)
 		
 		if value ~= lvalue and slider.ImageTransparency == 0 then
-			utilitys:Pop(slider, 10)
+			utility:Pop(slider, 10)
 		end
 		
 		return value
@@ -2101,7 +2102,7 @@ do
 		
 		local entries = 0
 		
-		utilitys:Pop(dropdown.Search, 10)
+		utility:Pop(dropdown.Search, 10)
 		
 		for i, button in pairs(dropdown.List.Frame:GetChildren()) do
 			if button:IsA("ImageButton") then
@@ -2110,7 +2111,7 @@ do
 		end
 			
 		for i, value in pairs(list or {}) do
-			local button = utilitys:Create("ImageButton", {
+			local button = utility:Create("ImageButton", {
 				Parent = dropdown.List.Frame,
 				BackgroundTransparency = 1,
 				BorderSizePixel = 0,
@@ -2121,7 +2122,7 @@ do
 				ScaleType = Enum.ScaleType.Slice,
 				SliceCenter = Rect.new(2, 2, 298, 298)
 			}, {
-				utilitys:Create("TextLabel", {
+				utility:Create("TextLabel", {
 					BackgroundTransparency = 1,
 					Position = UDim2.new(0, 10, 0, 0),
 					Size = UDim2.new(1, -10, 1, 0),
@@ -2150,8 +2151,8 @@ do
 		
 		local frame = dropdown.List.Frame
 		
-		utilitys:Tween(dropdown, {Size = UDim2.new(1, 0, 0, (entries == 0 and 30) or math.clamp(entries, 0, 3) * 34 + 38)}, 0.3)
-		utilitys:Tween(dropdown.Search.Button, {Rotation = list and 180 or 0}, 0.3)
+		utility:Tween(dropdown, {Size = UDim2.new(1, 0, 0, (entries == 0 and 30) or math.clamp(entries, 0, 3) * 34 + 38)}, 0.3)
+		utility:Tween(dropdown.Search.Button, {Rotation = list and 180 or 0}, 0.3)
 		
 		if entries > 3 then
 		
