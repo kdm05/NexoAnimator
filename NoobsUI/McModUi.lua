@@ -51,7 +51,6 @@ function e:Ui(name,CanDrag)
 		local screenincre =0
 		if #screen > 7 then
 			screenincre = #screen - 7
-			print(windowsCreated)
 			s.Position = UDim2.new(0, 50+(210*windowsCreated),0, 5+(screen[screenincre].AbsoluteSize.Y+screen[screenincre].AbsolutePosition.Y))
 		else
 			s.Position = UDim2.new(0, 50+(210*windowsCreated),0, 50)
