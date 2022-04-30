@@ -3,6 +3,9 @@ local e = {}
 function e:Ui(name,CanDrag)
 	local f = Instance.new("ScreenGui",game.CoreGui)
 	f.Name = name
+	local modal = Instance.new('TextButton',f)
+	modal.Size = UDim2.new(0,0,0,0)
+	local screen = {}
 	local lol = {}
 	local windowsCreated = -1
 	local plr = game.Players.LocalPlayer
@@ -18,27 +21,45 @@ function e:Ui(name,CanDrag)
 	function lol:Player()
 		return plr
 	end
-
+	
+	function lol:MouseState(bool)
+		modal.Modal = bool
+	end
+	
 	function lol.newWindow(TitleText,color3,rotation,EnumFont)
 		local b = {}
-		windowsCreated = windowsCreated + 1
+		local offsetwindow = {
+			X = 0
+		}
+			windowsCreated = windowsCreated + 1
+		if windowsCreated == 7 then
+			windowsCreated = -1
+			windowsCreated = windowsCreated + 1
+		end
 		local s = Instance.new("Frame",f)
 		local s2 = Instance.new("TextLabel",s)
 		local s3 = Instance.new("UICorner",s2)
 		local s4 = Instance.new("UIListLayout",s)
 		local s5 = Instance.new("UIGradient",s)
 		local s6 = Instance.new("UICorner",s)
-		
+		table.insert(screen,s)
 		EnumFont = EnumFont or Enum.Font.Gotham
 		
 		local textsize = 13
 		local padding1 = 34
 		local padding2 = 104
+		local screenincre =0
+		if #screen > 7 then
+			screenincre = #screen - 7
+			print(windowsCreated)
+			s.Position = UDim2.new(0, 50+(210*windowsCreated),0, 5+(screen[screenincre].AbsoluteSize.Y+screen[screenincre].AbsolutePosition.Y))
+		else
+			s.Position = UDim2.new(0, 50+(210*windowsCreated),0, 50)
+		end
 		
 		s.Name = TitleText
 		s.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 		s.ClipsDescendants = true
-		s.Position = UDim2.new(0, 50+(210*windowsCreated),0, 50)
 		s.Size = UDim2.new(0, 200, 0, 27)
 		
 		
