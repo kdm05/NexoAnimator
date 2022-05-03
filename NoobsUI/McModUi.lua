@@ -29,6 +29,9 @@ function e:Ui(name,CanDrag)
 	end
 	
 	function lol.newWindow(TitleText,color3,rotation,EnumFont)
+		TitleText = TitleText or ''
+		color3 = color3 or Color3.new(1, 1, 1)
+		rotation = TitleText or 0
 		local b = {}
 		local offsetwindow = {
 			X = 0
