@@ -1,6 +1,7 @@
 local e = {}
 
 function e:Ui(name,CanDrag)
+	name = name or ''
 	CanDrag = CanDrag or false
 	local f = Instance.new("ScreenGui",game.CoreGui)
 	f.Name = name
