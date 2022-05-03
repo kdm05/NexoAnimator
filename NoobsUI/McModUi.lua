@@ -1,6 +1,7 @@
 local e = {}
 
 function e:Ui(name,CanDrag)
+	CanDrag = CanDrag or false
 	local f = Instance.new("ScreenGui",game.CoreGui)
 	f.Name = name
 	local modal = Instance.new('TextButton',f)
