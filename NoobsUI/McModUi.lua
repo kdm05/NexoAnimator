@@ -135,6 +135,8 @@ function e:Ui(name,CanDrag)
 					s5.Color = color3.Value
 				elseif typeof(color3) == "table" then
 					s5.Color = ColorSequence.new(color3)
+				elseif typeof(color3) == "ColorSequence" then
+					s5.Color = color3
 				end
 			end
 		end
