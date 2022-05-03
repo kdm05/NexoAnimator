@@ -129,11 +129,11 @@ function e:Ui(name,CanDrag)
 
 		if color3 ~= nil then
 			if typeof(color3) == "Color3" then
-				s5.Color = ColorSequence.new(color3)
+				s5.Color = color3
 			else
-				if typeof(color3[1]) == "Color3" then
-					s5.Color = ColorSequence.new(color3[1],color3[2])
-				else
+				if typeof(color3) == "ColorSequenceKeypoint" then
+					s5.Color = color3.Value
+				elseif typeof(color3) == "table" then
 					s5.Color = ColorSequence.new(color3)
 				end
 			end
