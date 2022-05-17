@@ -32,7 +32,7 @@ function e:Ui(name,CanDrag)
 		modal.Modal = bool
 	end
 
-	function lol.newWindow(TitleText,color3,rotation,EnumFont)
+	function lol.newWindow(TitleText,color3,rotation,EnumFont,DarkMode)
 		if typeof(TitleText) == "table" then
 			TitleText = nil
 		end
@@ -42,22 +42,10 @@ function e:Ui(name,CanDrag)
 		local Text_Color_Opposite
 		local Frame_Color_Opposite
 		local Button_Color_Opposite
-		if color3 ~= nil then
-			if typeof(color3) == "Color3" then
-				Text_Color_Opposite = {color3:ToHSV()}
-				Text_Color_Opposite = Text_Color_Opposite[3]*255
-				if Text_Color_Opposite < 90 then
-					Text_Color_Opposite = Color3.new(1, 1, 1)
-					Frame_Color_Opposite = Color3.fromRGB(221, 221, 221)
-					Button_Color_Opposite = Color3.fromRGB(228,228,228)
-				else
-					Text_Color_Opposite = Color3.new(0, 0, 0)
-					Frame_Color_Opposite = Color3.fromRGB(0, 0, 0)
-					Button_Color_Opposite = Color3.fromRGB(27,27,27)
-				end
-			else
-				if typeof(color3) == "ColorSequenceKeypoint" then
-					Text_Color_Opposite = {color3.Value:ToHSV()}
+		if not DarkMode then
+			if color3 ~= nil then
+				if typeof(color3) == "Color3" then
+					Text_Color_Opposite = {color3:ToHSV()}
 					Text_Color_Opposite = Text_Color_Opposite[3]*255
 					if Text_Color_Opposite < 90 then
 						Text_Color_Opposite = Color3.new(1, 1, 1)
@@ -68,48 +56,75 @@ function e:Ui(name,CanDrag)
 						Frame_Color_Opposite = Color3.fromRGB(0, 0, 0)
 						Button_Color_Opposite = Color3.fromRGB(27,27,27)
 					end
-				elseif typeof(color3) == "table" then
-					local amo = #color3
-					local h = 0
-					for i=1,amo do
-						local z = {color3[i]:ToHSV()}
-						h = h +z[3]
-					end
-					Text_Color_Opposite = h/amo
-					Text_Color_Opposite = Text_Color_Opposite*255
-					if Text_Color_Opposite < 90 then
-						Text_Color_Opposite = Color3.new(1, 1, 1)
-						Frame_Color_Opposite = Color3.fromRGB(221, 221, 221)
-						Button_Color_Opposite = Color3.fromRGB(228,228,228)
-					else
-						Text_Color_Opposite = Color3.new(0, 0, 0)
-						Frame_Color_Opposite = Color3.fromRGB(0, 0, 0)
-						Button_Color_Opposite = Color3.fromRGB(27,27,27)
-					end
-				elseif typeof(color3) == "ColorSequence" then
-					local amo = #color3.Keypoints
-					local h = 0
-					for i=1,amo do
-						local z = {color3.Keypoints[i]:ToHSV()}
-						h = h +z[3]
-					end
-					Text_Color_Opposite = h/amo
-					Text_Color_Opposite = Text_Color_Opposite*255
-					if Text_Color_Opposite < 90 then
-						Text_Color_Opposite = Color3.new(1, 1, 1)
-						Frame_Color_Opposite = Color3.fromRGB(221, 221, 221)
-						Button_Color_Opposite = Color3.fromRGB(228,228,228)
-					else
-						Text_Color_Opposite = Color3.new(0, 0, 0)
-						Frame_Color_Opposite = Color3.fromRGB(0, 0, 0)
-						Button_Color_Opposite = Color3.fromRGB(27,27,27)
+				else
+					if typeof(color3) == "ColorSequenceKeypoint" then
+						Text_Color_Opposite = {color3.Value:ToHSV()}
+						Text_Color_Opposite = Text_Color_Opposite[3]*255
+						if Text_Color_Opposite < 90 then
+							Text_Color_Opposite = Color3.new(1, 1, 1)
+							Frame_Color_Opposite = Color3.fromRGB(221, 221, 221)
+							Button_Color_Opposite = Color3.fromRGB(228,228,228)
+						else
+							Text_Color_Opposite = Color3.new(0, 0, 0)
+							Frame_Color_Opposite = Color3.fromRGB(0, 0, 0)
+							Button_Color_Opposite = Color3.fromRGB(27,27,27)
+						end
+					elseif typeof(color3) == "table" then
+						local amo = #color3
+						local h = 0
+						for i=1,amo do
+							local z = {color3[i]:ToHSV()}
+							h = h +z[3]
+						end
+						Text_Color_Opposite = h/amo
+						Text_Color_Opposite = Text_Color_Opposite*255
+						if Text_Color_Opposite < 90 then
+							Text_Color_Opposite = Color3.new(1, 1, 1)
+							Frame_Color_Opposite = Color3.fromRGB(221, 221, 221)
+							Button_Color_Opposite = Color3.fromRGB(228,228,228)
+						else
+							Text_Color_Opposite = Color3.new(0, 0, 0)
+							Frame_Color_Opposite = Color3.fromRGB(0, 0, 0)
+							Button_Color_Opposite = Color3.fromRGB(27,27,27)
+						end
+					elseif typeof(color3) == "ColorSequence" then
+						local amo = #color3.Keypoints
+						local h = 0
+						for i=1,amo do
+							local z = {color3.Keypoints[i]:ToHSV()}
+							h = h +z[3]
+						end
+						Text_Color_Opposite = h/amo
+						Text_Color_Opposite = Text_Color_Opposite*255
+						if Text_Color_Opposite < 90 then
+							Text_Color_Opposite = Color3.new(1, 1, 1)
+							Frame_Color_Opposite = Color3.fromRGB(221, 221, 221)
+							Button_Color_Opposite = Color3.fromRGB(228,228,228)
+						else
+							Text_Color_Opposite = Color3.new(0, 0, 0)
+							Frame_Color_Opposite = Color3.fromRGB(0, 0, 0)
+							Button_Color_Opposite = Color3.fromRGB(27,27,27)
+						end
 					end
 				end
+			else
+				Text_Color_Opposite = Color3.new(0, 0, 0)
+				Frame_Color_Opposite = Color3.fromRGB(0, 0, 0)
+				Button_Color_Opposite = Color3.fromRGB(27,27,27)
 			end
 		else
-			Text_Color_Opposite = Color3.new(0, 0, 0)
-			Frame_Color_Opposite = Color3.fromRGB(0, 0, 0)
-			Button_Color_Opposite = Color3.fromRGB(27,27,27)
+			color3 = Color3.fromRGB(35, 35, 35)
+			Text_Color_Opposite = {color3:ToHSV()}
+			Text_Color_Opposite = Text_Color_Opposite[3]*255
+			if Text_Color_Opposite < 90 then
+				Text_Color_Opposite = Color3.new(1, 1, 1)
+				Frame_Color_Opposite = Color3.fromRGB(221, 221, 221)
+				Button_Color_Opposite = Color3.fromRGB(228,228,228)
+			else
+				Text_Color_Opposite = Color3.new(0, 0, 0)
+				Frame_Color_Opposite = Color3.fromRGB(0, 0, 0)
+				Button_Color_Opposite = Color3.fromRGB(27,27,27)
+			end
 		end
 		local b = {}
 		local offsetwindow = {
@@ -979,3 +994,15 @@ function e:Ui(name,CanDrag)
 
 	return lol
 end
+
+return e
+--[[
+:UI('Name',CanDrag:Bool)
+:UI():SetEnabled(Bool)
+:UI():GetEnabled() -- returns bool
+:UI():Player() returns localplayer
+:UI().newWindow('Title',[color3,colorsequence].colorrotation,enumfont)
+:UI().newWindow():Button('Text',OnClick:function)
+:UI().newWindow():Keybind('Text',DefualtKey,OnPressed:function)
+:UI().newWindow():
+]]
