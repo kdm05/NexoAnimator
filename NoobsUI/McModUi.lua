@@ -39,6 +39,74 @@ function e:Ui(name,CanDrag)
 		TitleText = TitleText or "TitleText"
 		color3 = color3 or nil
 		rotation = rotation or 0
+		local Text_Color_Opposite
+		local Frame_Color_Opposite
+		local Button_Color_Opposite
+		if color3 ~= nil then
+			if typeof(color3) == "Color3" then
+				Text_Color_Opposite = {color3:ToHSV()}
+				Text_Color_Opposite = Text_Color_Opposite[3]*255
+				if Text_Color_Opposite < 90 then
+					Text_Color_Opposite = Color3.new(1, 1, 1)
+					Frame_Color_Opposite = Color3.fromRGB(221, 221, 221)
+					Button_Color_Opposite = Color3.fromRGB(228,228,228)
+				else
+					Text_Color_Opposite = Color3.new(0, 0, 0)
+					Frame_Color_Opposite = Color3.fromRGB(0, 0, 0)
+					Button_Color_Opposite = Color3.fromRGB(27,27,27)
+				end
+			else
+				if typeof(color3) == "ColorSequenceKeypoint" then
+					Text_Color_Opposite = {color3.Value:ToHSV()}
+					Text_Color_Opposite = Text_Color_Opposite[3]*255
+					if Text_Color_Opposite < 90 then
+						Text_Color_Opposite = Color3.new(1, 1, 1)
+						Frame_Color_Opposite = Color3.fromRGB(221, 221, 221)
+						Button_Color_Opposite = Color3.fromRGB(228,228,228)
+					else
+						Text_Color_Opposite = Color3.new(0, 0, 0)
+						Frame_Color_Opposite = Color3.fromRGB(0, 0, 0)
+						Button_Color_Opposite = Color3.fromRGB(27,27,27)
+					end
+				elseif typeof(color3) == "table" then
+					local amo = #color3
+					local h = 0
+					for i=1,amo do
+						local z = {color3[i]:ToHSV()}
+						h = h +z[3]
+					end
+					Text_Color_Opposite = h/amo
+					Text_Color_Opposite = Text_Color_Opposite*255
+					if Text_Color_Opposite < 90 then
+						Text_Color_Opposite = Color3.new(1, 1, 1)
+						Frame_Color_Opposite = Color3.fromRGB(221, 221, 221)
+						Button_Color_Opposite = Color3.fromRGB(228,228,228)
+					else
+						Text_Color_Opposite = Color3.new(0, 0, 0)
+						Frame_Color_Opposite = Color3.fromRGB(0, 0, 0)
+						Button_Color_Opposite = Color3.fromRGB(27,27,27)
+					end
+				elseif typeof(color3) == "ColorSequence" then
+					local amo = #color3.Keypoints
+					local h = 0
+					for i=1,amo do
+						local z = {color3.Keypoints[i]:ToHSV()}
+						h = h +z[3]
+					end
+					Text_Color_Opposite = h/amo
+					Text_Color_Opposite = Text_Color_Opposite*255
+					if Text_Color_Opposite < 90 then
+						Text_Color_Opposite = Color3.new(1, 1, 1)
+						Frame_Color_Opposite = Color3.fromRGB(221, 221, 221)
+						Button_Color_Opposite = Color3.fromRGB(228,228,228)
+					else
+						Text_Color_Opposite = Color3.new(0, 0, 0)
+						Frame_Color_Opposite = Color3.fromRGB(0, 0, 0)
+						Button_Color_Opposite = Color3.fromRGB(27,27,27)
+					end
+				end
+			end
+		end
 		local b = {}
 		local offsetwindow = {
 			X = 0
@@ -57,6 +125,7 @@ function e:Ui(name,CanDrag)
 		table.insert(screen,s)
 		EnumFont = EnumFont or Enum.Font.Gotham
 		
+
 		local textsize = 13
 		local padding1 = 34
 		local padding2 = 104
@@ -120,14 +189,14 @@ function e:Ui(name,CanDrag)
 		end
 
 		s2.Name = TitleText
-		s2.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+		s2.BackgroundColor3 = Frame_Color_Opposite
 		s2.BackgroundTransparency = 0.950
 		s2.BorderColor3 = Color3.fromRGB(27, 42, 53)
 		s2.Size = UDim2.new(1, 0, 0, 25)
 		s2.Font = EnumFont
 		s2.TextWrapped = true
 		s2.Text = TitleText
-		s2.TextColor3 = Color3.fromRGB(0, 0, 0)
+		s2.TextColor3 = Text_Color_Opposite
 		s2.TextSize = textsize
 
 		s4.HorizontalAlignment = Enum.HorizontalAlignment.Center
@@ -138,14 +207,15 @@ function e:Ui(name,CanDrag)
 			if typeof(color3) == "Color3" then
 				s5.Color = ColorSequence.new(color3)
 			else
-				if typeof(color3[1]) == "Color3" then
-					s5.Color = ColorSequence.new(color3[1],color3[2])
-				else
+				if typeof(color3) == "ColorSequenceKeypoint" then
+					s5.Color = color3.Value
+				elseif typeof(color3) == "table" then
 					s5.Color = ColorSequence.new(color3)
+				elseif typeof(color3) == "ColorSequence" then
+					s5.Color = color3
 				end
 			end
 		end
-
 		s5.Rotation = rotation
 
 		function b:Button(ButtonText,Onclick)
@@ -156,13 +226,13 @@ function e:Ui(name,CanDrag)
 			local r = {}
 
 			e.Name = ButtonText
-			e.BackgroundColor3 = Color3.fromRGB(27, 27, 27)
+			e.BackgroundColor3 = Button_Color_Opposite
 			e.BackgroundTransparency = 0.800
 			e.BorderColor3 = Color3.fromRGB(27, 42, 53)
 			e.Size = UDim2.new(0.800000012, 0, 0, 30)
 			e.Font = EnumFont
 			e.Text = ButtonText
-			e.TextColor3 = Color3.fromRGB(0, 0, 0)
+			e.TextColor3 = Text_Color_Opposite
 			e.TextSize = 15.000
 			e.TextWrapped = true
 			Onclick = Onclick or function() end
@@ -215,7 +285,7 @@ function e:Ui(name,CanDrag)
 
 
 			e.Name = KeybindText
-			e.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+			e.BackgroundColor3 = Frame_Color_Opposite
 			e.BackgroundTransparency = .9
 			e.Position = UDim2.new(.1, 0, .39, 0)
 			e.Size = UDim2.new(.8, 0, 0, 30)
@@ -230,7 +300,7 @@ function e:Ui(name,CanDrag)
 			e1.Font = EnumFont
 			e1.Text = KeybindText
 			e1.TextWrapped = true
-			e1.TextColor3 = Color3.fromRGB(0, 0, 0)
+			e1.TextColor3 = Text_Color_Opposite
 			e1.TextSize = textsize
 
 			e2.Active = false
@@ -241,13 +311,13 @@ function e:Ui(name,CanDrag)
 			e2.LayoutOrder = 1
 			e2.ImageTransparency = 1
 
-			e3.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+			e3.BackgroundColor3 = Frame_Color_Opposite
 			e3.BackgroundTransparency = .9
 			e3.Size = UDim2.new(1, 0, 1, 0)
 			e3.Font = EnumFont
 			e3.Text = string.split(tostring(CurrentKeybind),'.')[3]
 			e3.TextWrapped = true
-			e3.TextColor3 = Color3.fromRGB(0, 0, 0)
+			e3.TextColor3 = Text_Color_Opposite
 			e3.TextSize = textsize
 
 			e2.MouseButton1Click:Connect(function()
@@ -307,7 +377,7 @@ function e:Ui(name,CanDrag)
 
 			g.Name = SwitchText
 			g.Parent = s
-			g.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+			g.BackgroundColor3 = Frame_Color_Opposite
 			g.BackgroundTransparency = .9
 			g.Position = UDim2.new(.1, 0, .39, 0)
 			g.Size = UDim2.new(.8, 0, 0, 30)
@@ -321,7 +391,7 @@ function e:Ui(name,CanDrag)
 			titl.Font = EnumFont
 			titl.Text = SwitchText
 			titl.TextWrapped = true
-			titl.TextColor3 = Color3.fromRGB(0, 0, 0)
+			titl.TextColor3 = Text_Color_Opposite
 			titl.TextSize = textsize
 
 			sw.Active = false
@@ -333,7 +403,7 @@ function e:Ui(name,CanDrag)
 
 			sw.ImageTransparency = 1
 
-			hlf.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+			hlf.BackgroundColor3 = Frame_Color_Opposite
 			hlf.BackgroundTransparency = .8
 			hlf.LayoutOrder = 1
 			hlf.Size = UDim2.new(1, 0, 1, 0)
@@ -345,7 +415,7 @@ function e:Ui(name,CanDrag)
 			hlt.Font = EnumFont
 			hlt.Text = ""
 			hlt.TextWrapped = true
-			hlt.TextColor3 = Color3.fromRGB(0, 0, 0)
+			hlt.TextColor3 = Text_Color_Opposite
 			hlt.TextSize = textsize
 			local db = false
 
@@ -392,13 +462,13 @@ function e:Ui(name,CanDrag)
 			Text = Text or "Text"
 
 			v.Name = Text
-			v.BackgroundColor3 = Color3.fromRGB(27, 27, 27)
+			v.BackgroundColor3 = Frame_Color_Opposite
 			v.BackgroundTransparency = .8
 			v.Size = UDim2.new(.8, 0, 0, 30)
 			v.Font = EnumFont
 			v.TextWrapped = true
 			v.Text = Text
-			v.TextColor3 = Color3.fromRGB(0, 0, 0)
+			v.TextColor3 = Text_Color_Opposite
 			v.TextSize = textsize
 
 			function c:newText(nText)
@@ -429,7 +499,7 @@ function e:Ui(name,CanDrag)
 			OnChanged = OnChanged or function() end
 
 			c.Name = Name
-			c.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+			c.BackgroundColor3 = Frame_Color_Opposite
 			c.BackgroundTransparency = .9
 			c.Position = UDim2.new(.1, 0, .39, 0)
 			c.Size = UDim2.new(.8, 0, 0, 30)
@@ -444,10 +514,10 @@ function e:Ui(name,CanDrag)
 			e.Font = EnumFont
 			e.TextWrapped = true
 			e.Text = Name
-			e.TextColor3 = Color3.fromRGB(0, 0, 0)
+			e.TextColor3 = Text_Color_Opposite
 			e.TextSize = textsize
 
-			h.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+			h.BackgroundColor3 = Frame_Color_Opposite
 			h.BackgroundTransparency = .9
 			h.ClipsDescendants = true
 			h.Size = UDim2.new(.45, 0, 1, 0)
@@ -456,7 +526,7 @@ function e:Ui(name,CanDrag)
 			h.Text = Text
 			h.LayoutOrder = 1
 			h.PlaceholderText = Hint
-			h.TextColor3 = Color3.fromRGB(0, 0, 0)
+			h.TextColor3 = Text_Color_Opposite
 			h.TextSize = textsize
 			h.TextWrapped = true
 
@@ -494,7 +564,7 @@ function e:Ui(name,CanDrag)
 			local cs
 			local cc
 			local ListsOBJ = {}
-			
+
 			List = List or {}
 			Current = Current or 1
 			onSelected = onSelected or function() end
@@ -511,7 +581,7 @@ function e:Ui(name,CanDrag)
 			local gu = Instance.new("UICorner",g)
 
 			d.Name = "Selector"
-			d.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+			d.BackgroundColor3 = Frame_Color_Opposite
 			d.BackgroundTransparency = .9
 			d.Position = UDim2.new(.1, 0, .39, 0)
 			d.Size = UDim2.new(.8, 0, 0, 30)
@@ -526,7 +596,7 @@ function e:Ui(name,CanDrag)
 			e.Font = EnumFont
 			e.TextWrapped = true
 			e.Text = "<"
-			e.TextColor3 = Color3.fromRGB(0, 0, 0)
+			e.TextColor3 = Text_Color_Opposite
 			e.TextSize = textsize
 			e.TextStrokeColor3 = Color3.fromRGB(255, 255, 255)
 			e.TextTransparency = .14
@@ -557,7 +627,7 @@ function e:Ui(name,CanDrag)
 			g.TextWrapped = true
 			g.Text = ">"
 			g.LayoutOrder = 2
-			g.TextColor3 = Color3.fromRGB(0, 0, 0)
+			g.TextColor3 = Text_Color_Opposite
 			g.TextSize = textsize
 
 			for i,v in ipairs(List) do
@@ -658,7 +728,7 @@ function e:Ui(name,CanDrag)
 			OnChanged = OnChanged or function() end
 
 			d.Name = Name
-			d.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+			d.BackgroundColor3 = Frame_Color_Opposite
 			d.BackgroundTransparency = .9
 			d.Position = UDim2.new(.1, 0, .52, 0)
 			d.Size = UDim2.new(.8, 0, 0, 100)
@@ -671,11 +741,11 @@ function e:Ui(name,CanDrag)
 			e.Size = UDim2.new(1, 0, .2, 0)
 			e.Font = EnumFont
 			e.Text = Name
-			e.TextColor3 = Color3.fromRGB(0, 0, 0)
+			e.TextColor3 = Text_Color_Opposite
 			e.TextSize = textsize
 			e.TextWrapped = true
 
-			f.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+			f.BackgroundColor3 = Frame_Color_Opposite
 			f.BackgroundTransparency = .9
 			f.ClipsDescendants = true
 			f.Size = UDim2.new(1, 0, .8, 0)
@@ -684,7 +754,7 @@ function e:Ui(name,CanDrag)
 			f.Text = Text
 			f.PlaceholderText = Hint
 			f.LayoutOrder = 1
-			f.TextColor3 = Color3.fromRGB(0, 0, 0)
+			f.TextColor3 = Text_Color_Opposite
 			f.TextSize = textsize
 			f.TextWrapped = true
 			f.TextXAlignment = Enum.TextXAlignment.Left
@@ -727,7 +797,7 @@ function e:Ui(name,CanDrag)
 
 			local a = Instance.new("Frame",s)
 			a.Name = Name
-			a.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+			a.BackgroundColor3 = Frame_Color_Opposite
 			a.BackgroundTransparency = .9
 			a.Position = UDim2.new(.1, 0, .08, 0)
 			a.Size = UDim2.new(.8, 0, 0, 50)
@@ -745,7 +815,7 @@ function e:Ui(name,CanDrag)
 			c.Size = UDim2.new(.75, 0, 1, 0)
 			c.Font = EnumFont
 			c.Text = Name
-			c.TextColor3 = Color3.fromRGB(0, 0, 0)
+			c.TextColor3 = Text_Color_Opposite
 			c.TextSize = 14
 			local d = Instance.new("TextBox",b)
 			d.BackgroundColor3 = Color3.fromRGB(90, 90, 90)
@@ -754,7 +824,7 @@ function e:Ui(name,CanDrag)
 			d.Font = EnumFont
 			d.Text = ''
 			d.LayoutOrder = 1
-			d.TextColor3 = Color3.fromRGB(0, 0, 0)
+			d.TextColor3 = Text_Color_Opposite
 			d.TextSize = 14
 			local UICorner_2 = Instance.new("UICorner",d)
 			local UIListLayout_2 = Instance.new("UIListLayout",b)
@@ -768,7 +838,7 @@ function e:Ui(name,CanDrag)
 			UIListLayout_3.FillDirection = Enum.FillDirection.Horizontal
 			UIListLayout_3.SortOrder = Enum.SortOrder.LayoutOrder
 			local f = Instance.new("Frame",e)
-			f.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+			f.BackgroundColor3 = Frame_Color_Opposite
 			f.BackgroundTransparency = .9
 			f.BorderColor3 = Color3.fromRGB(27, 42, 53)
 			f.Size = UDim2.new(1, 0, 1, 0)
@@ -779,14 +849,14 @@ function e:Ui(name,CanDrag)
 			UIListLayout_4.SortOrder = Enum.SortOrder.LayoutOrder
 			UIListLayout_4.VerticalAlignment = Enum.VerticalAlignment.Center
 			local g = Instance.new("ImageButton",f)
-			g.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+			g.BackgroundColor3 = Frame_Color_Opposite
 			g.BackgroundTransparency = .9
 			g.Size = UDim2.new(.9, 0, .62, 0)
 			g.Image = "rbxasset://textures/ui/GuiImagePlaceholder.png"
 			g.ImageTransparency = 1
 			local UICorner_4 = Instance.new("UICorner",g)
 			local h = Instance.new("Frame",g)
-			h.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+			h.BackgroundColor3 = Frame_Color_Opposite
 			h.BackgroundTransparency = .7
 			h.BorderColor3 = Color3.fromRGB(27, 42, 53)
 			h.ClipsDescendants = true
@@ -882,11 +952,11 @@ function e:Ui(name,CanDrag)
 				current = Value
 				movinggui.Size = UDim2.new(Value/max,0, 1,0)
 			end
-			
+
 			function X:getcurrentValue()
 				return current
 			end
-			
+
 			function X:setmaxValue(Value)
 				max = Value
 			end
@@ -894,9 +964,9 @@ function e:Ui(name,CanDrag)
 			function X:newOnSeek(func)
 				OnSeek = func
 			end
-			
+
 			s.Size = s.Size + UDim2.new(0,0,0,padding3)
-			
+
 			return X
 		end
 
