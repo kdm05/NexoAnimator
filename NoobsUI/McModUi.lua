@@ -106,6 +106,10 @@ function e:Ui(name,CanDrag)
 					end
 				end
 			end
+		else
+			Text_Color_Opposite = Color3.new(0, 0, 0)
+			Frame_Color_Opposite = Color3.fromRGB(0, 0, 0)
+			Button_Color_Opposite = Color3.fromRGB(27,27,27)
 		end
 		local b = {}
 		local offsetwindow = {
@@ -124,7 +128,7 @@ function e:Ui(name,CanDrag)
 		local s6 = Instance.new("UICorner",s)
 		table.insert(screen,s)
 		EnumFont = EnumFont or Enum.Font.Gotham
-		
+
 
 		local textsize = 13
 		local padding1 = 34
@@ -975,5 +979,3 @@ function e:Ui(name,CanDrag)
 
 	return lol
 end
-
-return e
