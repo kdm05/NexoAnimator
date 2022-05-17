@@ -39,6 +39,7 @@ function e:Ui(name,CanDrag)
 		TitleText = TitleText or "TitleText"
 		color3 = color3 or nil
 		rotation = rotation or 0
+		DarkMode = DarkMode or false
 		local Text_Color_Opposite
 		local Frame_Color_Opposite
 		local Button_Color_Opposite
