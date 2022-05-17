@@ -9,6 +9,8 @@ function e:Ui(name,CanDrag)
 	f.Name = name
 	local modal = Instance.new('TextButton',f)
 	modal.Size = UDim2.new(0,0,0,0)
+	modal.Text = ''
+	modal.TextTransparency = 1
 	local screen = {}
 	local lol = {}
 	local windowsCreated = -1
