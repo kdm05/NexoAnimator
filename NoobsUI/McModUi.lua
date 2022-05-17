@@ -997,13 +997,3 @@ function e:Ui(name,CanDrag)
 end
 
 return e
---[[
-:UI('Name',CanDrag:Bool)
-:UI():SetEnabled(Bool)
-:UI():GetEnabled() -- returns bool
-:UI():Player() returns localplayer
-:UI().newWindow('Title',[color3,colorsequence].colorrotation,enumfont)
-:UI().newWindow():Button('Text',OnClick:function)
-:UI().newWindow():Keybind('Text',DefualtKey,OnPressed:function)
-:UI().newWindow():
-]]
