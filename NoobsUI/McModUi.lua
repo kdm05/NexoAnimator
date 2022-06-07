@@ -808,7 +808,7 @@ function e:Ui(name,CanDrag)
 			return c
 		end
 
-		function b:Slider(Name,MaxValue,CurrentValue,OnSeek)
+		function b:Slider(Name,MinValue,MaxValue,CurrentValue,OnSeek)
 			Name = Name or "Slider"
 			MaxValue = MaxValue or 100
 			CurrentValue = CurrentValue or 0
@@ -887,7 +887,7 @@ function e:Ui(name,CanDrag)
 			local sliderbar = h
 			local isdragg = false
 			local max = MaxValue
-			local min = 0
+			local min = MinValue
 			local current = CurrentValue
 			local gui = g
 			local movinggui = sliderbar
