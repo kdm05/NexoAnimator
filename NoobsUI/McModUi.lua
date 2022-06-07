@@ -886,9 +886,9 @@ function e:Ui(name,CanDrag)
 			local editbox = d
 			local sliderbar = h
 			local isdragg = false
-			local max = MaxValue
-			local min = MinValue
-			local current = CurrentValue
+			local max = MaxValue or 100
+			local min = MinValue or 0
+			local current = CurrentValue or 0
 			local gui = g
 			local movinggui = sliderbar
 			local dragging
