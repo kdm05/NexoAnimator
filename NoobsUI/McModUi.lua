@@ -896,46 +896,44 @@ function e:Ui(name,CanDrag)
 			local dragStart
 			local startPos
 			movinggui.Size = UDim2.new(current/max,0, 1,0)
+			
+			editbox.Changed:Connect(function()
+				if not isdragg then
+					local allowed = {
+						[""] = true,
+						["-"] = true
+					}
+					local text = editbox.Text
 
-			editbox.FocusLost:Connect(function()
-				local allowed = {
-					[""] = true,
-					["-"] = true
-				}
-				local text = editbox.Text
-
-				if typeof(tonumber(text)) == nil then
-					editbox.Text = text:sub(1, #text - 1)
-				elseif typeof(tonumber(text)) == "number" then
-					current = tonumber(text)
-					movinggui.Size = UDim2.new(current/max,0, 1,0)
-					OnSeek(current)
+					if typeof(tonumber(text)) == nil then
+						editbox.Text = text:sub(1, #text - 1)
+					elseif typeof(tonumber(text)) == "number" then
+						current = tonumber(text)
+						movinggui.Size = UDim2.new((current-min)/max/math.sqrt((-min+max)/100),0, 1,0)
+					end
 				end
 			end)
 
 			local function update(input)
 				local delta = input.Position - dragStart
+				local x = startPos.X.Scale + delta.X/150
 				wait(.01)
+				x = math.clamp(x, 0, 1)
+				current = min + (max - min) * x
+				local z = (current-min)/max
+				if min < 0 then
+					z = (current-min)/max/math.sqrt((-min+max)/100)
+				end
 				if startPos.X.Scale + delta.X/150 > 0 then
 					if startPos.X.Scale + delta.X/150 < 1 then
-						movinggui.Size = UDim2.new(startPos.X.Scale + delta.X/150,0, 1,0)
+						movinggui.Size = UDim2.new(z,0, 1,0)
 					else
 						movinggui.Size = UDim2.new(1,0, 1,0)
 					end
 				else
 					movinggui.Size = UDim2.new(0, 0, 1, 0)
 				end
-				if min > 0 then
-					local a = max-min
-					current = a+(movinggui.Size.X.Scale*min)
-				elseif min == 0 then
-					current = movinggui.Size.X.Scale*max
-				elseif min < 0 then
-					local a = max+min
-					current = a-(movinggui.Size.X.Scale*min)
-				end
 				editbox.Text = math.round(current)
-				OnSeek(current)
 			end
 
 			gui.InputBegan:Connect(function(input)
