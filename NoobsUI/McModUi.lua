@@ -910,6 +910,7 @@ function e:Ui(name,CanDrag)
 					elseif typeof(tonumber(text)) == "number" then
 						current = tonumber(text)
 						movinggui.Size = UDim2.new((current-min)/max/math.sqrt((-min+max)/100),0, 1,0)
+						OnSeek(current)
 					end
 				end
 			end)
@@ -934,6 +935,7 @@ function e:Ui(name,CanDrag)
 					movinggui.Size = UDim2.new(0, 0, 1, 0)
 				end
 				editbox.Text = math.round(current)
+				OnSeek(current)
 			end
 
 			gui.InputBegan:Connect(function(input)
