@@ -895,8 +895,14 @@ function e:Ui(name,CanDrag)
 			local dragInput
 			local dragStart
 			local startPos
-			movinggui.Size = UDim2.new(current/max,0, 1,0)
-			
+			do
+				local z = (current-min)/max
+				if -min > 0 then
+					z = (current-min)/ (max - min)
+				end
+				movinggui.Size = UDim2.new(0,0, 1,0):Lerp(UDim2.new(1,0, 1,0),math.clamp(z,0,1))
+			end
+
 			editbox.Changed:Connect(function()
 				if not isdragg then
 					local allowed = {
@@ -909,25 +915,27 @@ function e:Ui(name,CanDrag)
 						editbox.Text = text:sub(1, #text - 1)
 					elseif typeof(tonumber(text)) == "number" then
 						current = tonumber(text)
-						movinggui.Size = UDim2.new((current-min)/max/math.sqrt((-min+max)/100),0, 1,0)
-						OnSeek(current)
+						local z = (current-min)/max
+						if -min > 0 then
+							z = (current-min)/ (max - min)
+						end
+						movinggui.Size = UDim2.new(0,0, 1,0):Lerp(UDim2.new(1,0, 1,0),math.clamp(z,0,1))
 					end
 				end
 			end)
 
 			local function update(input)
 				local delta = input.Position - dragStart
-				local x = startPos.X.Scale + delta.X/150
+				local x = startPos.X.Scale + delta.X/a.AbsoluteSize.X
 				wait(.01)
 				x = math.clamp(x, 0, 1)
-				current = min + (max - min) * x
 				local z = (current-min)/max
-				if min < 0 then
-					z = (current-min)/max/math.sqrt((-min+max)/100)
+				if -min > 0 then
+					z = (current-min)/ (max - min)
 				end
-				if startPos.X.Scale + delta.X/150 > 0 then
-					if startPos.X.Scale + delta.X/150 < 1 then
-						movinggui.Size = UDim2.new(z,0, 1,0)
+				if x > 0 then
+					if x < 1 then
+						movinggui.Size = UDim2.new(0,0, 1,0):Lerp(UDim2.new(1,0, 1,0),math.clamp(z,0,1))
 					else
 						movinggui.Size = UDim2.new(1,0, 1,0)
 					end
@@ -935,7 +943,6 @@ function e:Ui(name,CanDrag)
 					movinggui.Size = UDim2.new(0, 0, 1, 0)
 				end
 				editbox.Text = math.round(current)
-				OnSeek(current)
 			end
 
 			gui.InputBegan:Connect(function(input)
